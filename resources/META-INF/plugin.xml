@@ -1,0 +1,33 @@
+<idea-plugin>
+  <id>rocks.blackcat.vcl</id>
+  <name>VCL/Varnish language plugin</name>
+  <version>0.1</version>
+  <vendor email="jakubkania@blackcat.rocks" url="http://blackcat.rocks">Jakub Kania</vendor>
+
+  <description><![CDATA[
+      Support for the Varnish Configuration Language
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Just starting
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="143.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileTypeFactory implementation="rocks.blackcat.vcl.VCLFileTypeFactory"/>
+    <lang.parserDefinition language="VCL" implementationClass="rocks.blackcat.vcl.VCLParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="VCL" implementationClass="rocks.blackcat.vcl.VCLSyntaxHighlighterFactory"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>

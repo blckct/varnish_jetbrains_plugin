@@ -1,0 +1,143 @@
+{
+  parserClass="rocks.blackcat.vcl.parser.VCLParser"
+  parserUtilClass="rocks.blackcat.vcl.parser.VCLParserUtil"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="VCL"
+  psiImplClassSuffix="Impl"
+  psiPackage="rocks.blackcat.vcl.psi"
+  psiImplPackage="rocks.blackcat.vcl.psi.impl"
+
+  elementTypeHolderClass="rocks.blackcat.vcl.psi.VCLTypes"
+  elementTypeClass="rocks.blackcat.vcl.psi.VCLElementType"
+  tokenTypeClass="rocks.blackcat.vcl.psi.VCLTokenType"
+
+  tokens=[
+      SEMI=';'
+      EQ='='
+      LP='('
+      RP=')'
+      DOT='.'
+      LC='{'
+      RC='}'
+      COMMA=','
+
+      space='regexp:\s+'
+      private whitespace='regexp:\s+'
+      line_comment='regexp:(//|#).*'
+      number='regexp:\d+(\.\d*)?'
+      duration='regexp:\d+(\.\d*)?(ms|s|m|h|d|w|y)'
+      private ip='regexp:"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"'
+      string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+      //private identifier='regexp:\p{Alpha}[\w-]*'
+      identifier="regexp:([a-zA-Z][a-zA-Z0-9_-]*)"
+      block_comment='regexp:/\*..*\*/'
+      operator='regexp: !|%|&|==|~|=|<=|>=|<<|>>|\*=|-=|\+=\/=|>|<|/|\+|\*|-'
+
+      keyword_sub='sub'
+      keyword_acl='acl'
+      keyword_set='set'
+      keyword_backend='backend'
+      keyword_import='import'
+      keyword_if = 'if'
+      keyword_else = 'else'
+      keyword_return = 'return'
+      keyword_unset = 'unset'
+      keyword_new = 'new'
+      keyword_elseif = 'elseif'
+    ]
+
+    name("ACL")='keyword'
+    extends("keyword_.*")=keyword
+  }
+
+//  root ::= root_item *
+//  private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
+
+//  property ::= id '=' expr  {pin=2}
+//  private property_recover ::= !(';' | id '=')
+//
+//  expr ::= factor plus_expr *
+//  left plus_expr ::= plus_op factor
+//  private plus_op ::= '+'|'-'
+//  private factor ::= primary mul_expr *
+//  left mul_expr  ::= mul_op primary
+//  private mul_op ::= '*'|'/'
+//  private primary ::= primary_inner factorial_expr ?
+//  left factorial_expr ::= '!'
+//  private primary_inner ::= literal_expr | ref_expr | paren_expr
+//  paren_expr ::= '(' expr ')' {pin=1}
+//  ref_expr ::= id
+//  literal_expr ::= number | string | float
+  root ::= [VERSION] (ACL | SUB | BLANK | IMPORT | BACKEND)*
+  BLANK ::= line_comment | block_comment
+
+  VERSION ::= 'vcl' number ';'
+  IMPORT ::= 'import' identifier ';'
+  ACL ::= 'acl' identifier '{'ACL_ENTRY'}' {pin=1}
+  ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
+  ACL_PART  ::= ['!'] ( string | NETMASK)
+  NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
+  SUB ::= 'sub' identifier COMPOUND {pin =1}
+  COMPOUND ::= '{' STAMENT '}' {pin=1}
+  STAMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | BLANK) *
+  ACTION ::= BUITLIN | F_CALL
+  BUITLIN ::= RETURN
+  F_CALL ::= SYNTH
+  SYNTH ::= 'synth('number','string')'
+  INLINE_C ::= 'C{' '???' '}C' {pin=1}
+  IF_STATEMENT ::= 'if' CONDITION COMPOUND
+  CONDITION ::= '(' EXPRESSION ')'
+  EXPRESSION ::= (CONDITION | F_CALL | OPERATION | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
+  OPERATION ::= VALUE operator VALUE
+  //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'/'|'<'|'='|'>'|'~'|'=='|'<='
+    //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'/='
+  VALUE ::= string | number | VARIABLE
+  //VARIABLES
+  VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
+                | REQ_TOP | RESP | SERVER | STORAGE | FOO
+  FOO ::= 'req.url'
+  BEREQ ::= 'bereq'  ['.'   ('backend' | 'between_bytes_timeout' | 'body' | 'connect_timeout'
+                            | 'first_byte_timeout' | HEADER | 'method' | 'proto'
+                            | 'retries' |'uncacheable' | 'url' | 'xid'
+                            )]
+  BERESP ::= 'beresp' ['.' ('age' | 'backend' | 'backend.ip' | 'backend.name' | 'body'
+                            | 'do_esi' | 'do_gunzip' | 'do_gzip' | 'do_stream'
+                            | 'grace' | HEADER | 'keep' | 'proto' | 'reason' | 'status'
+                            | 'storage_hint' | 'ttl' | 'uncacheable' | 'was_304'
+                       )]
+  CLIENT ::= 'client.' ('identity' | 'ip')
+  LOCAL  ::= 'local.ip'
+  NOW ::= 'now'
+  OBJ ::= 'obj.' ('age' | 'grace' | 'hits' | HEADER | 'keep' | 'proto' | 'reason'
+                    | 'status' | 'ttl' | 'uncacheable')
+  REMOTE ::= 'remote.ip'
+  REQ ::= 'req' ['.' ( 'backend_hint' | 'can_gzip' | 'esi' | 'esi_level'
+                          | 'hash_always_miss' | 'hash_ignore_busy' | HEADER | 'method'
+                          | 'proto' | 'restarts' | 'ttl' | 'url' | 'xid'
+                      )]
+  REQ_TOP ::= 'req_top.' (HEADER | 'method' | 'proto' | 'url')
+  RESP ::= 'resp' | 'resp.' ('body' | HEADER | 'is_streaming' | 'reason' | 'status')
+  SERVER ::= 'server.' ('hostname' | 'identity' | 'ip')
+  STORAGE ::= 'storage.' identifier '.' ('free_space' | 'used_space' | 'happy')
+  HEADER ::= 'http.' identifier
+  //VARIABLES
+  RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
+  F_SYNTH ::= 'synth(' number ',' string ')'
+  BACKEND ::= 'backend' identifier '{' BACKEND_INTERNAL * '}'
+  BACKEND_INTERNAL ::= '.host' '=' string ';'
+                        | '.port' '=' string ';'
+                        |  '.max_connections' '=' number ';'
+                        |  '.first_byte_timeout' '=' duration ';'
+                        |  '.connect_timeout' '=' duration ';'
+                        |  '.between_bytes_timeout'  '=' duration ';'
+                        | PROBE | BLANK
+  PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'
+  PROBE_INTERNAL ::= '.url' '=' string ';'
+                     | '.timeout' '=' duration ';'
+                     | '.interval' '=' duration ';'
+                     | '.window' '=' number ';'
+                     | '.threshold' '=' number ';'
+                     | '.request' '=' string * ';'
+                     | BLANK
