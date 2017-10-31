@@ -24,6 +24,10 @@
     <fileTypeFactory implementation="rocks.blackcat.vcl.VCLFileTypeFactory"/>
     <lang.parserDefinition language="VCL" implementationClass="rocks.blackcat.vcl.VCLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="VCL" implementationClass="rocks.blackcat.vcl.VCLSyntaxHighlighterFactory"/>
+
+    <!-- CodeInsight -->
+    <lang.braceMatcher language="VCL" implementationClass="rocks.blackcat.vcl.codeinsight.VCLBraceMatcher"/>
+
   </extensions>
 
   <actions>
