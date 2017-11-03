@@ -35,6 +35,9 @@
       block_comment='regexp:/\*..*\*/'
       operator='regexp: !|%|&|==|~|=|<=|>=|<<|>>|\*=|-=|\+=\/=|>|<|/|\+|\*|-'
 
+      L_CBRACE = 'C{'
+      R_CBRACE = '}C'
+
       keyword_sub='sub'
       keyword_acl='acl'
       keyword_set='set'
@@ -86,7 +89,8 @@
   BUITLIN ::= RETURN
   F_CALL ::= SYNTH
   SYNTH ::= 'synth('number','string')'
-  INLINE_C ::= 'C{' '???' '}C' {pin=1}
+  INLINE_C ::= 'C{' C_CONTENT '}C' {pin=1}
+
   IF_STATEMENT ::= 'if' CONDITION COMPOUND
   CONDITION ::= '(' EXPRESSION ')'
   EXPRESSION ::= (CONDITION | F_CALL | OPERATION | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]

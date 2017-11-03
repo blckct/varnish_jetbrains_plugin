@@ -33,6 +33,8 @@ IDENTIFIER=([a-zA-Z][a-zA-Z0-9_-]*)
 BLOCK_COMMENT= "/*"( [^*] | (\*+[^*/]) )*\*+\/
 OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
 
+%state INLINE_C
+
 %%
 <YYINITIAL> {
   {WHITE_SPACE}        { return WHITE_SPACE; }
@@ -56,10 +58,8 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
   "unset"              { return KEYWORD_UNSET; }
   "new"                { return KEYWORD_NEW; }
   "elseif"             { return KEYWORD_ELSEIF; }
-
-
-
-
+  "include"            { return KEYWORD_INCLUDE; }
+   "C{"                { yybegin(INLINE_C); return L_CBRACE;}
 
   {SPACE}              { return SPACE; }
   {WHITESPACE}         { return WHITESPACE; }
@@ -72,6 +72,11 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
   {BLOCK_COMMENT}      { return BLOCK_COMMENT; }
   {OPERATOR}           { return OPERATOR; }
 
+}
+
+<INLINE_C> {
+    "}C" {yybegin(YYINITIAL); return R_CBRACE;}
+    (.|\n)+/}C  {return C_CONTENT;}
 }
 
 [^] { return BAD_CHARACTER; }
