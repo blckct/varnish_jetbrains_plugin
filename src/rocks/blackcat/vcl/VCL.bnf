@@ -49,10 +49,13 @@
       keyword_unset = 'unset'
       keyword_new = 'new'
       keyword_elseif = 'elseif'
+      keyword_include = 'include'
+
     ]
 
     name("ACL")='keyword'
     extends("keyword_.*")=keyword
+
   }
 
 //  root ::= root_item *
@@ -77,7 +80,10 @@
 
   VERSION ::= 'vcl' number ';'
   IMPORT ::= 'import' identifier ';'
-  ACL ::= 'acl' identifier '{'ACL_ENTRY'}' {pin=1}
+  INCLUDE ::= 'include' string ';'
+
+  PROBE ::= 'probe' '{' PROBE_INTERNAL '}'
+  ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( string | NETMASK)
   NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
@@ -135,12 +141,13 @@
                         |  '.first_byte_timeout' '=' duration ';'
                         |  '.connect_timeout' '=' duration ';'
                         |  '.between_bytes_timeout'  '=' duration ';'
-                        | PROBE | BLANK
-  PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'
+                        | BACKEND_PROBE
+  BACKEND_PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'
   PROBE_INTERNAL ::= '.url' '=' string ';'
                      | '.timeout' '=' duration ';'
                      | '.interval' '=' duration ';'
                      | '.window' '=' number ';'
                      | '.threshold' '=' number ';'
                      | '.request' '=' string * ';'
-                     | BLANK
+                     | '.expected_response' '=' number ';'
+                     | '.initial' '=' number ';'

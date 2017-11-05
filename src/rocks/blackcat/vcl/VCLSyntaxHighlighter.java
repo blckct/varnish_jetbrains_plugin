@@ -64,7 +64,8 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             KEYWORD_RETURN,
             KEYWORD_SET,
             KEYWORD_SUB,
-            KEYWORD_UNSET
+            KEYWORD_UNSET,
+            KEYWORD_INCLUDE
     );
 
     @NotNull
