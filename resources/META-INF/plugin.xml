@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>rocks.blackcat.vcl</id>
   <name>VCL/Varnish language plugin</name>
-  <version>0.1</version>
+  <version>0.2</version>
   <vendor email="jakubkania@blackcat.rocks" url="http://blackcat.rocks">Jakub Kania</vendor>
 
   <description><![CDATA[
@@ -9,6 +9,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      v0.2
+        * Added some missing keywords
+        * Add proper handling of inline C
+      v0.1
       Just starting
     ]]>
   </change-notes>
