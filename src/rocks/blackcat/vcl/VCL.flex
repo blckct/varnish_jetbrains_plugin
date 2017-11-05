@@ -35,6 +35,10 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
 
 %state INLINE_C
 
+%{
+  private int c_start;
+%}
+
 %%
 <YYINITIAL> {
   {WHITE_SPACE}        { return WHITE_SPACE; }
@@ -59,7 +63,8 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
   "new"                { return KEYWORD_NEW; }
   "elseif"             { return KEYWORD_ELSEIF; }
   "include"            { return KEYWORD_INCLUDE; }
-   "C{"                { yybegin(INLINE_C); return L_CBRACE;}
+   "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}
+   "}C"                { return R_CBRACE;}
 
   {SPACE}              { return SPACE; }
   {WHITESPACE}         { return WHITESPACE; }
@@ -75,8 +80,10 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
 }
 
 <INLINE_C> {
-    "}C" {yybegin(YYINITIAL); return R_CBRACE;}
-    (.|\n)+/}C  {return C_CONTENT;}
+    //"}C" {yybegin(YYINITIAL); return R_CBRACE;}
+    "}C" {yybegin(YYINITIAL); yypushback(2); zzStartRead = c_start; return C_CONTENT; }
+    .   {}
+    \n  {}
 }
 
 [^] { return BAD_CHARACTER; }

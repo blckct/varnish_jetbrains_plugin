@@ -73,8 +73,7 @@
 //  paren_expr ::= '(' expr ')' {pin=1}
 //  ref_expr ::= id
 //  literal_expr ::= number | string | float
-  root ::= [VERSION] (ACL | SUB | BLANK | IMPORT | BACKEND)*
-  BLANK ::= line_comment | block_comment
+  root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C)*
 
   VERSION ::= 'vcl' number ';'
   IMPORT ::= 'import' identifier ';'
@@ -84,7 +83,7 @@
   NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
   SUB ::= 'sub' identifier COMPOUND {pin =1}
   COMPOUND ::= '{' STAMENT '}' {pin=1}
-  STAMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | BLANK) *
+  STAMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' ) *
   ACTION ::= BUITLIN | F_CALL
   BUITLIN ::= RETURN
   F_CALL ::= SYNTH
@@ -126,7 +125,7 @@
   SERVER ::= 'server.' ('hostname' | 'identity' | 'ip')
   STORAGE ::= 'storage.' identifier '.' ('free_space' | 'used_space' | 'happy')
   HEADER ::= 'http.' identifier
-  //VARIABLES
+
   RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
   F_SYNTH ::= 'synth(' number ',' string ')'
   BACKEND ::= 'backend' identifier '{' BACKEND_INTERNAL * '}'
