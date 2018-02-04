@@ -29,7 +29,7 @@
       number='regexp:\d+(\.\d*)?'
       duration='regexp:\d+(\.\d*)?(ms|s|m|h|d|w|y)'
       private ip='regexp:"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"'
-      string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+      string="regexp:(\"(.*|[^\n])\"|'(.*|[^\n])')"
       //private identifier='regexp:\p{Alpha}[\w-]*'
       identifier="regexp:([a-zA-Z][a-zA-Z0-9_-]*)"
       block_comment='regexp:/\*..*\*/'
@@ -37,6 +37,9 @@
 
       L_CBRACE = 'C{'
       R_CBRACE = '}C'
+
+      L_LSTRING = '{"'
+      R_LSTRING = '"}'
 
       keyword_sub='sub'
       keyword_acl='acl'
@@ -80,12 +83,12 @@
 
   VERSION ::= 'vcl' number ';'
   IMPORT ::= 'import' identifier ';'
-  INCLUDE ::= 'include' string ';'
+  INCLUDE ::= 'include' STRINGS ';'
 
   PROBE ::= 'probe' '{' PROBE_INTERNAL '}'
   ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
-  ACL_PART  ::= ['!'] ( string | NETMASK)
+  ACL_PART  ::= ['!'] ( STRINGS | NETMASK)
   NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
   SUB ::= 'sub' identifier COMPOUND {pin =1}
   COMPOUND ::= '{' STAMENT '}' {pin=1}
@@ -93,8 +96,10 @@
   ACTION ::= BUITLIN | F_CALL
   BUITLIN ::= RETURN
   F_CALL ::= SYNTH
-  SYNTH ::= 'synth('number','string')'
+  SYNTH ::= 'synth('number','STRINGS')'
   INLINE_C ::= 'C{' C_CONTENT '}C' {pin=1}
+  LONG_STRING ::= '{"' STRING_CONTENT '}"' {pin=1}
+  STRINGS ::= string | LONG_STRING
 
   IF_STATEMENT ::= 'if' CONDITION COMPOUND
   CONDITION ::= '(' EXPRESSION ')'
@@ -102,7 +107,7 @@
   OPERATION ::= VALUE operator VALUE
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'/='
-  VALUE ::= string | number | VARIABLE
+  VALUE ::= STRINGS | number | VARIABLE
   //VARIABLES
   VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
                 | REQ_TOP | RESP | SERVER | STORAGE | FOO
@@ -133,21 +138,21 @@
   HEADER ::= 'http.' identifier
 
   RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
-  F_SYNTH ::= 'synth(' number ',' string ')'
+  F_SYNTH ::= 'synth(' number ',' STRINGS ')'
   BACKEND ::= 'backend' identifier '{' BACKEND_INTERNAL * '}'
-  BACKEND_INTERNAL ::= '.host' '=' string ';'
-                        | '.port' '=' string ';'
+  BACKEND_INTERNAL ::= '.host' '=' STRINGS ';'
+                        | '.port' '=' STRINGS ';'
                         |  '.max_connections' '=' number ';'
                         |  '.first_byte_timeout' '=' duration ';'
                         |  '.connect_timeout' '=' duration ';'
                         |  '.between_bytes_timeout'  '=' duration ';'
                         | BACKEND_PROBE
   BACKEND_PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'
-  PROBE_INTERNAL ::= '.url' '=' string ';'
+  PROBE_INTERNAL ::= '.url' '=' STRINGS ';'
                      | '.timeout' '=' duration ';'
                      | '.interval' '=' duration ';'
                      | '.window' '=' number ';'
                      | '.threshold' '=' number ';'
-                     | '.request' '=' string * ';'
+                     | '.request' '=' STRINGS * ';'
                      | '.expected_response' '=' number ';'
                      | '.initial' '=' number ';'

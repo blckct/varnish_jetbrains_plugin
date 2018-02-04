@@ -92,6 +92,9 @@ public class VCLParser implements PsiParser, LightPsiParser {
     else if (t == LOCAL) {
       r = LOCAL(b, 0);
     }
+    else if (t == LONG_STRING) {
+      r = LONG_STRING(b, 0);
+    }
     else if (t == NETMASK) {
       r = NETMASK(b, 0);
     }
@@ -133,6 +136,9 @@ public class VCLParser implements PsiParser, LightPsiParser {
     }
     else if (t == STORAGE) {
       r = STORAGE(b, 0);
+    }
+    else if (t == STRINGS) {
+      r = STRINGS(b, 0);
     }
     else if (t == SUB) {
       r = SUB(b, 0);
@@ -211,7 +217,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ['!'] ( string | NETMASK)
+  // ['!'] ( STRINGS | NETMASK)
   public static boolean ACL_PART(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ACL_PART")) return false;
     boolean r;
@@ -229,12 +235,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // string | NETMASK
+  // STRINGS | NETMASK
   private static boolean ACL_PART_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ACL_PART_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, STRING);
+    r = STRINGS(b, l + 1);
     if (!r) r = NETMASK(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -279,8 +285,8 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '.host' '=' string ';'
-  //                         | '.port' '=' string ';'
+  // '.host' '=' STRINGS ';'
+  //                         | '.port' '=' STRINGS ';'
   //                         |  '.max_connections' '=' number ';'
   //                         |  '.first_byte_timeout' '=' duration ';'
   //                         |  '.connect_timeout' '=' duration ';'
@@ -301,24 +307,28 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '.host' '=' string ';'
+  // '.host' '=' STRINGS ';'
   private static boolean BACKEND_INTERNAL_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BACKEND_INTERNAL_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ".host");
-    r = r && consumeTokens(b, 0, EQ, STRING, SEMI);
+    r = r && consumeToken(b, EQ);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, SEMI);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // '.port' '=' string ';'
+  // '.port' '=' STRINGS ';'
   private static boolean BACKEND_INTERNAL_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BACKEND_INTERNAL_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ".port");
-    r = r && consumeTokens(b, 0, EQ, STRING, SEMI);
+    r = r && consumeToken(b, EQ);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, SEMI);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -670,13 +680,15 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'synth(' number ',' string ')'
+  // 'synth(' number ',' STRINGS ')'
   public static boolean F_SYNTH(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "F_SYNTH")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, F_SYNTH, "<f synth>");
     r = consumeToken(b, "synth(");
-    r = r && consumeTokens(b, 0, NUMBER, COMMA, STRING, RP);
+    r = r && consumeTokens(b, 0, NUMBER, COMMA);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, RP);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -720,13 +732,15 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'include' string ';'
+  // 'include' STRINGS ';'
   public static boolean INCLUDE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "INCLUDE")) return false;
     if (!nextTokenIs(b, KEYWORD_INCLUDE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, KEYWORD_INCLUDE, STRING, SEMI);
+    r = consumeToken(b, KEYWORD_INCLUDE);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, SEMI);
     exit_section_(b, m, INCLUDE, r);
     return r;
   }
@@ -753,6 +767,19 @@ public class VCLParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, "local.ip");
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // '{"' STRING_CONTENT '}"'
+  public static boolean LONG_STRING(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LONG_STRING")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, LONG_STRING, "<long string>");
+    r = consumeToken(b, "{\"");
+    p = r; // pin = 1
+    r = r && report_error_(b, consumeTokens(b, -1, STRING_CONTENT, R_LSTRING));
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -892,12 +919,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '.url' '=' string ';'
+  // '.url' '=' STRINGS ';'
   //                      | '.timeout' '=' duration ';'
   //                      | '.interval' '=' duration ';'
   //                      | '.window' '=' number ';'
   //                      | '.threshold' '=' number ';'
-  //                      | '.request' '=' string * ';'
+  //                      | '.request' '=' STRINGS * ';'
   //                      | '.expected_response' '=' number ';'
   //                      | '.initial' '=' number ';'
   public static boolean PROBE_INTERNAL(PsiBuilder b, int l) {
@@ -916,13 +943,15 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '.url' '=' string ';'
+  // '.url' '=' STRINGS ';'
   private static boolean PROBE_INTERNAL_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PROBE_INTERNAL_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ".url");
-    r = r && consumeTokens(b, 0, EQ, STRING, SEMI);
+    r = r && consumeToken(b, EQ);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, SEMI);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -971,7 +1000,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '.request' '=' string * ';'
+  // '.request' '=' STRINGS * ';'
   private static boolean PROBE_INTERNAL_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PROBE_INTERNAL_5")) return false;
     boolean r;
@@ -984,12 +1013,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // string *
+  // STRINGS *
   private static boolean PROBE_INTERNAL_5_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PROBE_INTERNAL_5_2")) return false;
     int c = current_position_(b);
     while (true) {
-      if (!consumeToken(b, STRING)) break;
+      if (!STRINGS(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "PROBE_INTERNAL_5_2", c)) break;
       c = current_position_(b);
     }
@@ -1271,6 +1300,18 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // string | LONG_STRING
+  public static boolean STRINGS(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "STRINGS")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STRINGS, "<strings>");
+    r = consumeToken(b, STRING);
+    if (!r) r = LONG_STRING(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // 'sub' identifier COMPOUND
   public static boolean SUB(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SUB")) return false;
@@ -1285,24 +1326,26 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'synth('number','string')'
+  // 'synth('number','STRINGS')'
   public static boolean SYNTH(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SYNTH")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SYNTH, "<synth>");
     r = consumeToken(b, "synth(");
-    r = r && consumeTokens(b, 0, NUMBER, COMMA, STRING, RP);
+    r = r && consumeTokens(b, 0, NUMBER, COMMA);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, RP);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // string | number | VARIABLE
+  // STRINGS | number | VARIABLE
   public static boolean VALUE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VALUE")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
-    r = consumeToken(b, STRING);
+    r = STRINGS(b, l + 1);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = VARIABLE(b, l + 1);
     exit_section_(b, l, m, r, false, null);

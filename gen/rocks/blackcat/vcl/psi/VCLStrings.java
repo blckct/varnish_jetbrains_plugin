@@ -5,18 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLBackendInternal extends PsiElement {
+public interface VCLStrings extends PsiElement {
 
   @Nullable
-  VCLBackendProbe getBackendProbe();
+  VCLLongString getLongString();
 
   @Nullable
-  VCLStrings getStrings();
-
-  @Nullable
-  PsiElement getDuration();
-
-  @Nullable
-  PsiElement getNumber();
+  PsiElement getString();
 
 }

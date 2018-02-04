@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface VCLSynth extends PsiElement {
 
   @NotNull
-  PsiElement getNumber();
+  VCLStrings getStrings();
 
   @NotNull
-  PsiElement getString();
+  PsiElement getNumber();
 
 }

@@ -11,25 +11,19 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLIncludeImpl extends ASTWrapperPsiElement implements VCLInclude {
+public class VCLLongStringImpl extends ASTWrapperPsiElement implements VCLLongString {
 
-  public VCLIncludeImpl(ASTNode node) {
+  public VCLLongStringImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitInclude(this);
+    visitor.visitLongString(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof VCLVisitor) accept((VCLVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public VCLStrings getStrings() {
-    return findNotNullChildByClass(VCLStrings.class);
   }
 
 }

@@ -28,14 +28,14 @@ public class VCLSynthImpl extends ASTWrapperPsiElement implements VCLSynth {
 
   @Override
   @NotNull
-  public PsiElement getNumber() {
-    return findNotNullChildByType(NUMBER);
+  public VCLStrings getStrings() {
+    return findNotNullChildByClass(VCLStrings.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getString() {
-    return findNotNullChildByType(STRING);
+  public PsiElement getNumber() {
+    return findNotNullChildByType(NUMBER);
   }
 
 }

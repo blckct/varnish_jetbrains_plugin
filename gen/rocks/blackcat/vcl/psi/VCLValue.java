@@ -8,12 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface VCLValue extends PsiElement {
 
   @Nullable
+  VCLStrings getStrings();
+
+  @Nullable
   VCLVariable getVariable();
 
   @Nullable
   PsiElement getNumber();
-
-  @Nullable
-  PsiElement getString();
 
 }

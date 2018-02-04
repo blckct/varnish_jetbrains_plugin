@@ -28,6 +28,12 @@ public class VCLProbeInternalImpl extends ASTWrapperPsiElement implements VCLPro
 
   @Override
   @Nullable
+  public VCLStrings getStrings() {
+    return findChildByClass(VCLStrings.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getDuration() {
     return findChildByType(DURATION);
   }
@@ -36,12 +42,6 @@ public class VCLProbeInternalImpl extends ASTWrapperPsiElement implements VCLPro
   @Nullable
   public PsiElement getNumber() {
     return findChildByType(NUMBER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
   }
 
 }

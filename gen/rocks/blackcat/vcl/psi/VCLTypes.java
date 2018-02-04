@@ -31,6 +31,7 @@ public interface VCLTypes {
   IElementType INCLUDE = new VCLElementType("INCLUDE");
   IElementType INLINE_C = new VCLElementType("INLINE_C");
   IElementType LOCAL = new VCLElementType("LOCAL");
+  IElementType LONG_STRING = new VCLElementType("LONG_STRING");
   IElementType NETMASK = new VCLElementType("NETMASK");
   IElementType NOW = new VCLElementType("NOW");
   IElementType OBJ = new VCLElementType("OBJ");
@@ -45,6 +46,7 @@ public interface VCLTypes {
   IElementType SERVER = new VCLElementType("SERVER");
   IElementType STAMENT = new VCLElementType("STAMENT");
   IElementType STORAGE = new VCLElementType("STORAGE");
+  IElementType STRINGS = new VCLElementType("STRINGS");
   IElementType SUB = new VCLElementType("SUB");
   IElementType SYNTH = new VCLElementType("SYNTH");
   IElementType VALUE = new VCLElementType("VALUE");
@@ -76,13 +78,16 @@ public interface VCLTypes {
   IElementType LINE_COMMENT = new VCLTokenType("line_comment");
   IElementType LP = new VCLTokenType("(");
   IElementType L_CBRACE = new VCLTokenType("C{");
+  IElementType L_LSTRING = new VCLTokenType("\"{");
   IElementType NUMBER = new VCLTokenType("number");
   IElementType OPERATOR = new VCLTokenType("operator");
   IElementType RC = new VCLTokenType("}");
   IElementType RP = new VCLTokenType(")");
   IElementType R_CBRACE = new VCLTokenType("}C");
+  IElementType R_LSTRING = new VCLTokenType("}\"");
   IElementType SEMI = new VCLTokenType(";");
   IElementType STRING = new VCLTokenType("string");
+  IElementType STRING_CONTENT = new VCLTokenType("STRING_CONTENT");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -156,6 +161,9 @@ public interface VCLTypes {
       else if (type == LOCAL) {
         return new VCLLocalImpl(node);
       }
+      else if (type == LONG_STRING) {
+        return new VCLLongStringImpl(node);
+      }
       else if (type == NETMASK) {
         return new VCLNetmaskImpl(node);
       }
@@ -197,6 +205,9 @@ public interface VCLTypes {
       }
       else if (type == STORAGE) {
         return new VCLStorageImpl(node);
+      }
+      else if (type == STRINGS) {
+        return new VCLStringsImpl(node);
       }
       else if (type == SUB) {
         return new VCLSubImpl(node);

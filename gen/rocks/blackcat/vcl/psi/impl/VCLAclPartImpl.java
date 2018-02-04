@@ -34,8 +34,8 @@ public class VCLAclPartImpl extends ASTWrapperPsiElement implements VCLAclPart {
 
   @Override
   @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
+  public VCLStrings getStrings() {
+    return findChildByClass(VCLStrings.class);
   }
 
 }

@@ -8,12 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface VCLProbeInternal extends PsiElement {
 
   @Nullable
+  VCLStrings getStrings();
+
+  @Nullable
   PsiElement getDuration();
 
   @Nullable
   PsiElement getNumber();
-
-  @Nullable
-  PsiElement getString();
 
 }

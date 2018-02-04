@@ -14,9 +14,11 @@ public class VCLBraceMatcher implements PairedBraceMatcher{
     @NotNull
     @Override
     public BracePair[] getPairs() {
-        BracePair[] bp = {new BracePair(VCLTypes.LC, VCLTypes.RC, true),
-                        new BracePair(VCLTypes.LP, VCLTypes.RP, true),
-                        new BracePair(VCLTypes.L_CBRACE, VCLTypes.R_CBRACE, true)};
+        BracePair[] bp = {new BracePair(VCLTypes.LC, VCLTypes.RC, true)
+                        ,new BracePair(VCLTypes.LP, VCLTypes.RP, true)
+                        ,new BracePair(VCLTypes.L_CBRACE, VCLTypes.R_CBRACE, true)
+                        ,new BracePair(VCLTypes.L_LSTRING, VCLTypes.R_LSTRING, true)
+                        };
         return bp;
     }
 

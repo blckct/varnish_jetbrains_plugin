@@ -34,6 +34,12 @@ public class VCLBackendInternalImpl extends ASTWrapperPsiElement implements VCLB
 
   @Override
   @Nullable
+  public VCLStrings getStrings() {
+    return findChildByClass(VCLStrings.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getDuration() {
     return findChildByType(DURATION);
   }
@@ -42,12 +48,6 @@ public class VCLBackendInternalImpl extends ASTWrapperPsiElement implements VCLB
   @Nullable
   public PsiElement getNumber() {
     return findChildByType(NUMBER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
   }
 
 }

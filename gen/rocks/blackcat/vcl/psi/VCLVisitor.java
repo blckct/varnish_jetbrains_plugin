@@ -99,6 +99,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitLongString(@NotNull VCLLongString o) {
+    visitPsiElement(o);
+  }
+
   public void visitNetmask(@NotNull VCLNetmask o) {
     visitPsiElement(o);
   }
@@ -152,6 +156,10 @@ public class VCLVisitor extends PsiElementVisitor {
   }
 
   public void visitStorage(@NotNull VCLStorage o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStrings(@NotNull VCLStrings o) {
     visitPsiElement(o);
   }
 

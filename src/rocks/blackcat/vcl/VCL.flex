@@ -28,15 +28,17 @@ LINE_COMMENT=("//"|#).*
 NUMBER=[0-9]+(\.[0-9]*)?
 DURATION=[0-9]+(\.[0-9]*)?(ms|s|m|h|d|w|y)
 IP=\"\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b\"
-STRING=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
+STRING=(\"(.*|[^\n])\"|'(.*|[^\n])')
 IDENTIFIER=([a-zA-Z][a-zA-Z0-9_-]*)
 BLOCK_COMMENT= "/*"( [^*] | (\*+[^*/]) )*\*+\/
 OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
 
 %state INLINE_C
+%state LONG_STRING
 
 %{
   private int c_start;
+  private int s_start;
 %}
 
 %%
@@ -65,6 +67,8 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
   "include"            { return KEYWORD_INCLUDE; }
    "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}
    "}C"                { return R_CBRACE;}
+   "{\""               { yybegin(LONG_STRING); s_start = getTokenStart()+2; return L_LSTRING; }
+   "\"}"               { return R_LSTRING; }
 
   {SPACE}              { return SPACE; }
   {WHITESPACE}         { return WHITESPACE; }
@@ -82,6 +86,13 @@ OPERATOR= "!"|%|&|==|"~"|=|<=|>=|<<|>>|&&|\|\||\*=|-=|\+="/"=|>|<|"/"|\+|\*|-
 <INLINE_C> {
     //"}C" {yybegin(YYINITIAL); return R_CBRACE;}
     "}C" {yybegin(YYINITIAL); yypushback(2); zzStartRead = c_start; return C_CONTENT; }
+    .   {}
+    \n  {}
+}
+
+<LONG_STRING> {
+    //"}C" {yybegin(YYINITIAL); return R_CBRACE;}
+    "\"}" {yybegin(YYINITIAL); yypushback(2); zzStartRead = s_start; return STRING_CONTENT; }
     .   {}
     \n  {}
 }

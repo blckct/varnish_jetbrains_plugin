@@ -28,6 +28,12 @@ public class VCLValueImpl extends ASTWrapperPsiElement implements VCLValue {
 
   @Override
   @Nullable
+  public VCLStrings getStrings() {
+    return findChildByClass(VCLStrings.class);
+  }
+
+  @Override
+  @Nullable
   public VCLVariable getVariable() {
     return findChildByClass(VCLVariable.class);
   }
@@ -36,12 +42,6 @@ public class VCLValueImpl extends ASTWrapperPsiElement implements VCLValue {
   @Nullable
   public PsiElement getNumber() {
     return findChildByType(NUMBER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
   }
 
 }

@@ -90,7 +90,7 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             return BAD_CHAR_KEYS;
         } else if (tokenType.equals(VCLTypes.ACL_ENTRY)){
             return ACL_KEYS;
-        } else if (tokenType.equals(VCLTypes.STRING)){
+        } else if (tokenType.equals(VCLTypes.STRING) || tokenType.equals(VCLTypes.STRING_CONTENT)){
             return STRING_KEYS;
         } else if (tokenType.equals(VCLTypes.OPERATOR)){
             return OPERATOR_KEYS;
