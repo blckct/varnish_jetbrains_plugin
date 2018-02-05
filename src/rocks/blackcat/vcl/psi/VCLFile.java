@@ -9,8 +9,21 @@ import org.jetbrains.annotations.NotNull;
         import javax.swing.*;
 
 public class VCLFile extends PsiFileBase {
+
+    Double version;
+
     public VCLFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, VCLLanguage.INSTANCE);
+        VCLVersion versionNode = this.findChildByClass(VCLVersion.class);
+        if(versionNode == null) {
+            return;
+        }
+        try {
+            String version = versionNode.getText().replace("vcl", "").replace(";","");
+            this.version = Double.parseDouble(version);
+        } catch (NumberFormatException e) {
+            this.version = 3.0;
+        }
     }
 
     @NotNull

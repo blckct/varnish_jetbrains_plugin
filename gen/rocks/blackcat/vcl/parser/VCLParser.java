@@ -773,11 +773,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
   // '{"' STRING_CONTENT '}"'
   public static boolean LONG_STRING(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LONG_STRING")) return false;
+    if (!nextTokenIs(b, L_LSTRING)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, LONG_STRING, "<long string>");
-    r = consumeToken(b, "{\"");
+    Marker m = enter_section_(b, l, _NONE_, LONG_STRING, null);
+    r = consumeTokens(b, 1, L_LSTRING, STRING_CONTENT);
     p = r; // pin = 1
-    r = r && report_error_(b, consumeTokens(b, -1, STRING_CONTENT, R_LSTRING));
+    r = r && consumeToken(b, "}\"");
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -1303,6 +1304,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   // string | LONG_STRING
   public static boolean STRINGS(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STRINGS")) return false;
+    if (!nextTokenIs(b, "<strings>", L_LSTRING, STRING)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRINGS, "<strings>");
     r = consumeToken(b, STRING);
@@ -1340,7 +1342,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRINGS | number | VARIABLE
+  // STRINGS | number | VARIABLE | identifier
   public static boolean VALUE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VALUE")) return false;
     boolean r;
@@ -1348,6 +1350,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     r = STRINGS(b, l + 1);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = VARIABLE(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

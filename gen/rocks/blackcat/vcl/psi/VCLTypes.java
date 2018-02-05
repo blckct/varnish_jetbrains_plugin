@@ -78,13 +78,13 @@ public interface VCLTypes {
   IElementType LINE_COMMENT = new VCLTokenType("line_comment");
   IElementType LP = new VCLTokenType("(");
   IElementType L_CBRACE = new VCLTokenType("C{");
-  IElementType L_LSTRING = new VCLTokenType("\"{");
+  IElementType L_LSTRING = new VCLTokenType("{\"");
   IElementType NUMBER = new VCLTokenType("number");
   IElementType OPERATOR = new VCLTokenType("operator");
   IElementType RC = new VCLTokenType("}");
   IElementType RP = new VCLTokenType(")");
   IElementType R_CBRACE = new VCLTokenType("}C");
-  IElementType R_LSTRING = new VCLTokenType("}\"");
+  IElementType R_LSTRING = new VCLTokenType("\"}");
   IElementType SEMI = new VCLTokenType(";");
   IElementType STRING = new VCLTokenType("string");
   IElementType STRING_CONTENT = new VCLTokenType("STRING_CONTENT");

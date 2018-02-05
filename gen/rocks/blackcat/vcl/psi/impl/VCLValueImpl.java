@@ -40,6 +40,12 @@ public class VCLValueImpl extends ASTWrapperPsiElement implements VCLValue {
 
   @Override
   @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getNumber() {
     return findChildByType(NUMBER);
   }

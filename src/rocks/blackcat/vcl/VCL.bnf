@@ -31,9 +31,9 @@
       private ip='regexp:"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"'
       string="regexp:(\"(.*|[^\n])\"|'(.*|[^\n])')"
       //private identifier='regexp:\p{Alpha}[\w-]*'
-      identifier="regexp:([a-zA-Z][a-zA-Z0-9_-]*)"
+      identifier="regexp:([a-zA-Z][a-zA-Z0-9_-.]*)"
       block_comment='regexp:/\*..*\*/'
-      operator='regexp: !|%|&|==|~|=|<=|>=|<<|>>|\*=|-=|\+=\/=|>|<|/|\+|\*|-'
+      operator='regexp: \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|/=|>|<|/|\+|\*|-|\|\|'
 
       L_CBRACE = 'C{'
       R_CBRACE = '}C'
@@ -58,7 +58,6 @@
 
     name("ACL")='keyword'
     extends("keyword_.*")=keyword
-
   }
 
 //  root ::= root_item *
@@ -91,13 +90,18 @@
   ACL_PART  ::= ['!'] ( STRINGS | NETMASK)
   NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
   SUB ::= 'sub' identifier COMPOUND {pin =1}
-  COMPOUND ::= '{' STAMENT '}' {pin=1}
+
+  COMPOUND ::= '{' STAMENT '}' {pin=1}//  recoverWhile=compund_recover}
+  //private compund_recover ::= !(R_CBRACE)
+
   STAMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' ) *
   ACTION ::= BUITLIN | F_CALL
   BUITLIN ::= RETURN
   F_CALL ::= SYNTH
   SYNTH ::= 'synth('number','STRINGS')'
+
   INLINE_C ::= 'C{' C_CONTENT '}C' {pin=1}
+
   LONG_STRING ::= '{"' STRING_CONTENT '}"' {pin=1}
   STRINGS ::= string | LONG_STRING
 
@@ -105,9 +109,9 @@
   CONDITION ::= '(' EXPRESSION ')'
   EXPRESSION ::= (CONDITION | F_CALL | OPERATION | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
   OPERATION ::= VALUE operator VALUE
-  //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'/'|'<'|'='|'>'|'~'|'=='|'<='
-    //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'/='
-  VALUE ::= STRINGS | number | VARIABLE
+  //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
+    //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
+  VALUE ::= STRINGS | number | VARIABLE | identifier
   //VARIABLES
   VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
                 | REQ_TOP | RESP | SERVER | STORAGE | FOO
