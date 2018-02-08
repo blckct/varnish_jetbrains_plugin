@@ -88,6 +88,7 @@ OPERATOR= \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
     "}C" {yybegin(YYINITIAL); yypushback(2); zzStartRead = c_start; return C_CONTENT; }
     .   {}
     \n  {}
+    <<EOF>> {yybegin(YYINITIAL); return C_CONTENT;}
 }
 
 <LONG_STRING> {
@@ -95,6 +96,7 @@ OPERATOR= \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
     "\"}" {yybegin(YYINITIAL); yypushback(2); zzStartRead = s_start; return STRING_CONTENT; }
     .   {}
     \n  {}
+    <<EOF>> {yybegin(YYINITIAL); return STRING_CONTENT;}
 }
 
 [^] { return BAD_CHARACTER; }
