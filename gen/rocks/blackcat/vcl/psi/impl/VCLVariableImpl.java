@@ -46,12 +46,6 @@ public class VCLVariableImpl extends ASTWrapperPsiElement implements VCLVariable
 
   @Override
   @Nullable
-  public VCLFoo getFoo() {
-    return findChildByClass(VCLFoo.class);
-  }
-
-  @Override
-  @Nullable
   public VCLLocal getLocal() {
     return findChildByClass(VCLLocal.class);
   }
@@ -66,6 +60,12 @@ public class VCLVariableImpl extends ASTWrapperPsiElement implements VCLVariable
   @Nullable
   public VCLObj getObj() {
     return findChildByClass(VCLObj.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLObject getObject() {
+    return findChildByClass(VCLObject.class);
   }
 
   @Override

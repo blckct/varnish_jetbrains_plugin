@@ -26,4 +26,10 @@ public class VCLClientImpl extends ASTWrapperPsiElement implements VCLClient {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public VCLObject getObject() {
+    return findNotNullChildByClass(VCLObject.class);
+  }
+
 }

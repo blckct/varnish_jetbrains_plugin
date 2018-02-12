@@ -27,9 +27,9 @@ public class VCLCompoundImpl extends ASTWrapperPsiElement implements VCLCompound
   }
 
   @Override
-  @Nullable
-  public VCLStament getStament() {
-    return findChildByClass(VCLStament.class);
+  @NotNull
+  public VCLStatement getStatement() {
+    return findNotNullChildByClass(VCLStatement.class);
   }
 
 }

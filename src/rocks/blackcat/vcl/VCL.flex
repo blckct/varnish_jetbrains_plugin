@@ -28,10 +28,10 @@ LINE_COMMENT=("//"|#).*
 NUMBER=[0-9]+(\.[0-9]*)?
 DURATION=[0-9]+(\.[0-9]*)?(ms|s|m|h|d|w|y)
 IP=\"\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b\"
-STRING=(\"(.*|[^\n])\"|'(.*|[^\n])')
+STRING=('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")
 IDENTIFIER=([a-zA-Z]([a-zA-Z0-9_-]|\.)*)
 BLOCK_COMMENT= "/*"( [^*] | (\*+[^*/]) )*\*+\/
-OPERATOR= \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
+OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
 
 %state INLINE_C
 %state LONG_STRING
@@ -60,11 +60,15 @@ OPERATOR= \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
   "import"             { return KEYWORD_IMPORT; }
   "if"                 { return KEYWORD_IF; }
   "else"               { return KEYWORD_ELSE; }
+  "elif"               { return KEYWORD_ELIF; }
+  "elsif"              { return KEYWORD_ELSIF; }
+  "elseif"             { return KEYWORD_ELSEIF; }
   "return"             { return KEYWORD_RETURN; }
   "unset"              { return KEYWORD_UNSET; }
   "new"                { return KEYWORD_NEW; }
-  "elseif"             { return KEYWORD_ELSEIF; }
   "include"            { return KEYWORD_INCLUDE; }
+  "remove"             { return KEYWORD_REMOVE; }
+
    "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}
    "}C"                { return R_CBRACE;}
    "{\""               { yybegin(LONG_STRING); s_start = getTokenStart()+2; return L_LSTRING; }

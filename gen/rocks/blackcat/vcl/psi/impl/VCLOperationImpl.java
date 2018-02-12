@@ -32,10 +32,4 @@ public class VCLOperationImpl extends ASTWrapperPsiElement implements VCLOperati
     return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLValue.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getOperator() {
-    return findNotNullChildByType(OPERATOR);
-  }
-
 }

@@ -46,6 +46,12 @@ public class VCLExpressionImpl extends ASTWrapperPsiElement implements VCLExpres
 
   @Override
   @Nullable
+  public VCLObject getObject() {
+    return findChildByClass(VCLObject.class);
+  }
+
+  @Override
+  @Nullable
   public VCLOperation getOperation() {
     return findChildByClass(VCLOperation.class);
   }

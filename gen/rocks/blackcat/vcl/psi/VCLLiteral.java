@@ -5,12 +5,24 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLSynth extends PsiElement {
+public interface VCLLiteral extends PsiElement {
 
-  @NotNull
+  @Nullable
+  VCLObject getObject();
+
+  @Nullable
   VCLStrings getStrings();
 
-  @NotNull
+  @Nullable
+  VCLVariable getVariable();
+
+  @Nullable
+  PsiElement getDuration();
+
+  @Nullable
+  PsiElement getIdentifier();
+
+  @Nullable
   PsiElement getNumber();
 
 }

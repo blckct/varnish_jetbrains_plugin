@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface VCLSub extends PsiElement {
 
-  @Nullable
+  @NotNull
   VCLCompound getCompound();
 
-  @Nullable
+  @NotNull
   PsiElement getIdentifier();
 
 }

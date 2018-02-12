@@ -11,14 +11,14 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLIfStatementImpl extends ASTWrapperPsiElement implements VCLIfStatement {
+public class VCLElseImpl extends ASTWrapperPsiElement implements VCLElse {
 
-  public VCLIfStatementImpl(ASTNode node) {
+  public VCLElseImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitIfStatement(this);
+    visitor.visitElse(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,21 +27,27 @@ public class VCLIfStatementImpl extends ASTWrapperPsiElement implements VCLIfSta
   }
 
   @Override
-  @NotNull
+  @Nullable
   public VCLCompound getCompound() {
-    return findNotNullChildByClass(VCLCompound.class);
+    return findChildByClass(VCLCompound.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public VCLCondition getCondition() {
-    return findNotNullChildByClass(VCLCondition.class);
+    return findChildByClass(VCLCondition.class);
   }
 
   @Override
   @Nullable
   public VCLElse getElse() {
     return findChildByClass(VCLElse.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLIfStatement getIfStatement() {
+    return findChildByClass(VCLIfStatement.class);
   }
 
 }

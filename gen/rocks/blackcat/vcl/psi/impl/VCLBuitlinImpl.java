@@ -27,9 +27,15 @@ public class VCLBuitlinImpl extends ASTWrapperPsiElement implements VCLBuitlin {
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public VCLError getError() {
+    return findChildByClass(VCLError.class);
+  }
+
+  @Override
+  @Nullable
   public VCLReturn getReturn() {
-    return findNotNullChildByClass(VCLReturn.class);
+    return findChildByClass(VCLReturn.class);
   }
 
 }

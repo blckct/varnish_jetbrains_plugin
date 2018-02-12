@@ -11,14 +11,14 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLSynthImpl extends ASTWrapperPsiElement implements VCLSynth {
+public class VCLLiteralImpl extends ASTWrapperPsiElement implements VCLLiteral {
 
-  public VCLSynthImpl(ASTNode node) {
+  public VCLLiteralImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitSynth(this);
+    visitor.visitLiteral(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,15 +27,39 @@ public class VCLSynthImpl extends ASTWrapperPsiElement implements VCLSynth {
   }
 
   @Override
-  @NotNull
-  public VCLStrings getStrings() {
-    return findNotNullChildByClass(VCLStrings.class);
+  @Nullable
+  public VCLObject getObject() {
+    return findChildByClass(VCLObject.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public VCLStrings getStrings() {
+    return findChildByClass(VCLStrings.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLVariable getVariable() {
+    return findChildByClass(VCLVariable.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getDuration() {
+    return findChildByType(DURATION);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getNumber() {
-    return findNotNullChildByType(NUMBER);
+    return findChildByType(NUMBER);
   }
 
 }

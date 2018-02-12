@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface VCLCompound extends PsiElement {
 
-  @Nullable
-  VCLStament getStament();
+  @NotNull
+  VCLStatement getStatement();
 
 }

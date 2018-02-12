@@ -18,11 +18,13 @@ public interface VCLTypes {
   IElementType BEREQ = new VCLElementType("BEREQ");
   IElementType BERESP = new VCLElementType("BERESP");
   IElementType BUITLIN = new VCLElementType("BUITLIN");
+  IElementType CALL = new VCLElementType("CALL");
   IElementType CLIENT = new VCLElementType("CLIENT");
   IElementType COMPOUND = new VCLElementType("COMPOUND");
   IElementType CONDITION = new VCLElementType("CONDITION");
+  IElementType ELSE = new VCLElementType("ELSE");
+  IElementType ERROR = new VCLElementType("ERROR");
   IElementType EXPRESSION = new VCLElementType("EXPRESSION");
-  IElementType FOO = new VCLElementType("FOO");
   IElementType F_CALL = new VCLElementType("F_CALL");
   IElementType F_SYNTH = new VCLElementType("F_SYNTH");
   IElementType HEADER = new VCLElementType("HEADER");
@@ -30,25 +32,29 @@ public interface VCLTypes {
   IElementType IMPORT = new VCLElementType("IMPORT");
   IElementType INCLUDE = new VCLElementType("INCLUDE");
   IElementType INLINE_C = new VCLElementType("INLINE_C");
+  IElementType LITERAL = new VCLElementType("LITERAL");
   IElementType LOCAL = new VCLElementType("LOCAL");
   IElementType LONG_STRING = new VCLElementType("LONG_STRING");
   IElementType NETMASK = new VCLElementType("NETMASK");
   IElementType NOW = new VCLElementType("NOW");
   IElementType OBJ = new VCLElementType("OBJ");
+  IElementType OBJECT = new VCLElementType("OBJECT");
   IElementType OPERATION = new VCLElementType("OPERATION");
   IElementType PROBE = new VCLElementType("PROBE");
   IElementType PROBE_INTERNAL = new VCLElementType("PROBE_INTERNAL");
+  IElementType PURGE = new VCLElementType("PURGE");
   IElementType REMOTE = new VCLElementType("REMOTE");
   IElementType REQ = new VCLElementType("REQ");
   IElementType REQ_TOP = new VCLElementType("REQ_TOP");
   IElementType RESP = new VCLElementType("RESP");
   IElementType RETURN = new VCLElementType("RETURN");
   IElementType SERVER = new VCLElementType("SERVER");
-  IElementType STAMENT = new VCLElementType("STAMENT");
+  IElementType SET = new VCLElementType("SET");
+  IElementType STATEMENT = new VCLElementType("STATEMENT");
   IElementType STORAGE = new VCLElementType("STORAGE");
   IElementType STRINGS = new VCLElementType("STRINGS");
   IElementType SUB = new VCLElementType("SUB");
-  IElementType SYNTH = new VCLElementType("SYNTH");
+  IElementType UNSET = new VCLElementType("UNSET");
   IElementType VALUE = new VCLElementType("VALUE");
   IElementType VARIABLE = new VCLElementType("VARIABLE");
   IElementType VERSION = new VCLElementType("VERSION");
@@ -64,12 +70,15 @@ public interface VCLTypes {
   IElementType IP = new VCLTokenType("ip");
   IElementType KEYWORD_ACL = new VCLTokenType("acl");
   IElementType KEYWORD_BACKEND = new VCLTokenType("backend");
+  IElementType KEYWORD_ELIF = new VCLTokenType("elif");
   IElementType KEYWORD_ELSE = new VCLTokenType("else");
   IElementType KEYWORD_ELSEIF = new VCLTokenType("elseif");
+  IElementType KEYWORD_ELSIF = new VCLTokenType("elsif");
   IElementType KEYWORD_IF = new VCLTokenType("if");
   IElementType KEYWORD_IMPORT = new VCLTokenType("import");
   IElementType KEYWORD_INCLUDE = new VCLTokenType("include");
   IElementType KEYWORD_NEW = new VCLTokenType("new");
+  IElementType KEYWORD_REMOVE = new VCLTokenType("remove");
   IElementType KEYWORD_RETURN = new VCLTokenType("return");
   IElementType KEYWORD_SET = new VCLTokenType("set");
   IElementType KEYWORD_SUB = new VCLTokenType("sub");
@@ -122,6 +131,9 @@ public interface VCLTypes {
       else if (type == BUITLIN) {
         return new VCLBuitlinImpl(node);
       }
+      else if (type == CALL) {
+        return new VCLCallImpl(node);
+      }
       else if (type == CLIENT) {
         return new VCLClientImpl(node);
       }
@@ -131,11 +143,14 @@ public interface VCLTypes {
       else if (type == CONDITION) {
         return new VCLConditionImpl(node);
       }
+      else if (type == ELSE) {
+        return new VCLElseImpl(node);
+      }
+      else if (type == ERROR) {
+        return new VCLErrorImpl(node);
+      }
       else if (type == EXPRESSION) {
         return new VCLExpressionImpl(node);
-      }
-      else if (type == FOO) {
-        return new VCLFooImpl(node);
       }
       else if (type == F_CALL) {
         return new VCLFCallImpl(node);
@@ -158,6 +173,9 @@ public interface VCLTypes {
       else if (type == INLINE_C) {
         return new VCLInlineCImpl(node);
       }
+      else if (type == LITERAL) {
+        return new VCLLiteralImpl(node);
+      }
       else if (type == LOCAL) {
         return new VCLLocalImpl(node);
       }
@@ -173,6 +191,9 @@ public interface VCLTypes {
       else if (type == OBJ) {
         return new VCLObjImpl(node);
       }
+      else if (type == OBJECT) {
+        return new VCLObjectImpl(node);
+      }
       else if (type == OPERATION) {
         return new VCLOperationImpl(node);
       }
@@ -181,6 +202,9 @@ public interface VCLTypes {
       }
       else if (type == PROBE_INTERNAL) {
         return new VCLProbeInternalImpl(node);
+      }
+      else if (type == PURGE) {
+        return new VCLPurgeImpl(node);
       }
       else if (type == REMOTE) {
         return new VCLRemoteImpl(node);
@@ -200,8 +224,11 @@ public interface VCLTypes {
       else if (type == SERVER) {
         return new VCLServerImpl(node);
       }
-      else if (type == STAMENT) {
-        return new VCLStamentImpl(node);
+      else if (type == SET) {
+        return new VCLSetImpl(node);
+      }
+      else if (type == STATEMENT) {
+        return new VCLStatementImpl(node);
       }
       else if (type == STORAGE) {
         return new VCLStorageImpl(node);
@@ -212,8 +239,8 @@ public interface VCLTypes {
       else if (type == SUB) {
         return new VCLSubImpl(node);
       }
-      else if (type == SYNTH) {
-        return new VCLSynthImpl(node);
+      else if (type == UNSET) {
+        return new VCLUnsetImpl(node);
       }
       else if (type == VALUE) {
         return new VCLValueImpl(node);

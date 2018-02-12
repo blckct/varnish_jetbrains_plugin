@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLStrings extends PsiElement {
+public interface VCLStrings extends VCLStringMixin {
 
   @Nullable
   VCLLongString getLongString();

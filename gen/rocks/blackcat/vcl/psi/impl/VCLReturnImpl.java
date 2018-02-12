@@ -32,4 +32,10 @@ public class VCLReturnImpl extends ASTWrapperPsiElement implements VCLReturn {
     return findChildByClass(VCLFSynth.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
 }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface VCLFCall extends PsiElement {
 
   @NotNull
-  VCLSynth getSynth();
+  VCLObject getObject();
+
+  @NotNull
+  List<VCLOperation> getOperationList();
 
 }

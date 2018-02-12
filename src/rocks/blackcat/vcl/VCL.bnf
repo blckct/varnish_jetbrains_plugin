@@ -29,11 +29,12 @@
       number='regexp:\d+(\.\d*)?'
       duration='regexp:\d+(\.\d*)?(ms|s|m|h|d|w|y)'
       private ip='regexp:"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"'
-      string="regexp:(\"(.*|[^\n])\"|'(.*|[^\n])')"
+      string="regexp:('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")"
+      //string="regexp:(\"([^\n\"]|.*)\"|'(.*|[^\n'])')"
       //private identifier='regexp:\p{Alpha}[\w-]*'
       identifier="regexp:([a-zA-Z][a-zA-Z0-9_-.]*)"
       block_comment='regexp:/\*..*\*/'
-      operator='regexp: \!=|\!|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|/=|>|<|/|\+|\*|-|\|\|'
+      operator='regexp: \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|/=|>|<|/|\+|\*|-|\|\|'
 
       L_CBRACE = 'C{'
       R_CBRACE = '}C'
@@ -48,11 +49,14 @@
       keyword_import='import'
       keyword_if = 'if'
       keyword_else = 'else'
+      keyword_elif = 'elif'
+      keyword_elsif = 'elsif'
+      keyword_elseif = 'elseif'
       keyword_return = 'return'
       keyword_unset = 'unset'
       keyword_new = 'new'
-      keyword_elseif = 'elseif'
       keyword_include = 'include'
+      keyword_remove = 'remove'
 
     ]
 
@@ -60,23 +64,6 @@
     extends("keyword_.*")=keyword
   }
 
-//  root ::= root_item *
-//  private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
-
-//  property ::= id '=' expr  {pin=2}
-//  private property_recover ::= !(';' | id '=')
-//
-//  expr ::= factor plus_expr *
-//  left plus_expr ::= plus_op factor
-//  private plus_op ::= '+'|'-'
-//  private factor ::= primary mul_expr *
-//  left mul_expr  ::= mul_op primary
-//  private mul_op ::= '*'|'/'
-//  private primary ::= primary_inner factorial_expr ?
-//  left factorial_expr ::= '!'
-//  private primary_inner ::= literal_expr | ref_expr | paren_expr
-//  paren_expr ::= '(' expr ')' {pin=1}
-//  ref_expr ::= id
 //  literal_expr ::= number | string | float
   root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C)*
 
@@ -89,33 +76,44 @@
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( STRINGS | NETMASK)
   NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
-  SUB ::= 'sub' identifier COMPOUND {pin =1}
+  SUB ::= 'sub' identifier COMPOUND
+  private not_sub ::= ! RC
 
-  COMPOUND ::= '{' STAMENT '}' {pin=1}//  recoverWhile=compund_recover}
-  //private compund_recover ::= !(R_CBRACE)
+  COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
+  private rc_recover ::= !(RC)
 
-  STAMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' ) *
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE) ';' ) *
   ACTION ::= BUITLIN | F_CALL
-  BUITLIN ::= RETURN
-  F_CALL ::= SYNTH
-  SYNTH ::= 'synth('number','STRINGS')'
+  ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
+  BUITLIN ::= RETURN | ERROR
+  F_CALL ::= OBJECT '(' OPERATION [ (',' OPERATION ) *] ')'
+  //SYNTH ::= 'synth('number','STRINGS')'
+  PURGE ::= 'purge'
 
-  INLINE_C ::= 'C{' C_CONTENT '}C' {pin=1}
+  CALL ::= 'call' OBJECT
+  SET ::= 'set' OBJECT '=' (OPERATION)
+  UNSET ::= ('unset' | 'remove') OBJECT
 
-  LONG_STRING ::= '{"' STRING_CONTENT '}"' {pin=1}
-  STRINGS ::= string | LONG_STRING
+  INLINE_C ::= 'C{' C_CONTENT '}C' {implements="rocks.blackcat.vcl.psi.VCLInlineCMixin"}
 
-  IF_STATEMENT ::= 'if' CONDITION COMPOUND
+  LONG_STRING ::= '{"' STRING_CONTENT '}"' //{pin=1}
+  STRINGS ::= string | LONG_STRING {implements="rocks.blackcat.vcl.psi.VCLStringMixin"}
+
+  IF_STATEMENT ::= 'if' IF_INTERAL
+  private IF_INTERAL ::= CONDITION COMPOUND [ELSE]//{pin=1 recoverWhile=rc_recover}
+  ELSE ::= ('else' (COMPOUND | IF_STATEMENT)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
   CONDITION ::= '(' EXPRESSION ')'
-  EXPRESSION ::= (CONDITION | F_CALL | OPERATION | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
-  OPERATION ::= VALUE operator VALUE
+  EXPRESSION ::= (CONDITION | F_CALL | OPERATION | OBJECT | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
+  OPERATION ::= VALUE [(operator VALUE) *]
+  VALUE ::= ['!'] (F_CALL|LITERAL|OBJECT)
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
-  VALUE ::= STRINGS | number | VARIABLE | identifier
+  LITERAL ::= STRINGS | number | VARIABLE | identifier | OBJECT | duration
+  OBJECT ::= identifier ['DOT' identifier]
   //VARIABLES
   VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
-                | REQ_TOP | RESP | SERVER | STORAGE | FOO
-  FOO ::= 'req.url'
+                | REQ_TOP | RESP | SERVER | STORAGE |  OBJECT
+  //FOO ::= 'req.url'
   BEREQ ::= 'bereq'  ['.'   ('backend' | 'between_bytes_timeout' | 'body' | 'connect_timeout'
                             | 'first_byte_timeout' | HEADER | 'method' | 'proto'
                             | 'retries' |'uncacheable' | 'url' | 'xid'
@@ -125,8 +123,8 @@
                             | 'grace' | HEADER | 'keep' | 'proto' | 'reason' | 'status'
                             | 'storage_hint' | 'ttl' | 'uncacheable' | 'was_304'
                        )]
-  CLIENT ::= 'client.' ('identity' | 'ip')
-  LOCAL  ::= 'local.ip'
+  CLIENT ::= OBJECT// 'client.' ('identity' | 'ip')
+  LOCAL  ::= OBJECT //'local.ip'
   NOW ::= 'now'
   OBJ ::= 'obj.' ('age' | 'grace' | 'hits' | HEADER | 'keep' | 'proto' | 'reason'
                     | 'status' | 'ttl' | 'uncacheable')
@@ -139,9 +137,10 @@
   RESP ::= 'resp' | 'resp.' ('body' | HEADER | 'is_streaming' | 'reason' | 'status')
   SERVER ::= 'server.' ('hostname' | 'identity' | 'ip')
   STORAGE ::= 'storage.' identifier '.' ('free_space' | 'used_space' | 'happy')
-  HEADER ::= 'http.' identifier
+  HEADER ::= OBJECT //'http.' identifier
 
-  RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
+  RETURN ::= 'return' '('( identifier | F_SYNTH) ')'
+  //RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
   F_SYNTH ::= 'synth(' number ',' STRINGS ')'
   BACKEND ::= 'backend' identifier '{' BACKEND_INTERNAL * '}'
   BACKEND_INTERNAL ::= '.host' '=' STRINGS ';'
@@ -160,3 +159,5 @@
                      | '.request' '=' STRINGS * ';'
                      | '.expected_response' '=' number ';'
                      | '.initial' '=' number ';'
+
+  private semi_recover ::= !(SEMI);

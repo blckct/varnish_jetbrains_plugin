@@ -13,6 +13,7 @@ import com.intellij.psi.tree.TokenSet;
 public class VCLParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(VCLTypes.BLOCK_COMMENT, VCLTypes.LINE_COMMENT);
+    public static final TokenSet STRING_LITERALS = TokenSet.create(VCLTypes.STRING, VCLTypes.LONG_STRING);
 
     public static final IFileElementType FILE = new IFileElementType(VCLLanguage.INSTANCE);
 
@@ -34,7 +35,7 @@ public class VCLParserDefinition implements ParserDefinition {
 
     @NotNull
     public TokenSet getStringLiteralElements() {
-        return TokenSet.EMPTY;
+        return STRING_LITERALS;
     }
 
     @NotNull

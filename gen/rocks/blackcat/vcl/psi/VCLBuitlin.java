@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface VCLBuitlin extends PsiElement {
 
-  @NotNull
+  @Nullable
+  VCLError getError();
+
+  @Nullable
   VCLReturn getReturn();
 
 }

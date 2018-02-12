@@ -47,6 +47,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCall(@NotNull VCLCall o) {
+    visitPsiElement(o);
+  }
+
   public void visitClient(@NotNull VCLClient o) {
     visitPsiElement(o);
   }
@@ -59,11 +63,15 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitExpression(@NotNull VCLExpression o) {
+  public void visitElse(@NotNull VCLElse o) {
     visitPsiElement(o);
   }
 
-  public void visitFoo(@NotNull VCLFoo o) {
+  public void visitError(@NotNull VCLError o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExpression(@NotNull VCLExpression o) {
     visitPsiElement(o);
   }
 
@@ -92,6 +100,10 @@ public class VCLVisitor extends PsiElementVisitor {
   }
 
   public void visitInlineC(@NotNull VCLInlineC o) {
+    visitInlineCMixin(o);
+  }
+
+  public void visitLiteral(@NotNull VCLLiteral o) {
     visitPsiElement(o);
   }
 
@@ -115,6 +127,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitObject(@NotNull VCLObject o) {
+    visitPsiElement(o);
+  }
+
   public void visitOperation(@NotNull VCLOperation o) {
     visitPsiElement(o);
   }
@@ -124,6 +140,10 @@ public class VCLVisitor extends PsiElementVisitor {
   }
 
   public void visitProbeInternal(@NotNull VCLProbeInternal o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPurge(@NotNull VCLPurge o) {
     visitPsiElement(o);
   }
 
@@ -151,7 +171,11 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitStament(@NotNull VCLStament o) {
+  public void visitSet(@NotNull VCLSet o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStatement(@NotNull VCLStatement o) {
     visitPsiElement(o);
   }
 
@@ -160,14 +184,14 @@ public class VCLVisitor extends PsiElementVisitor {
   }
 
   public void visitStrings(@NotNull VCLStrings o) {
-    visitPsiElement(o);
+    visitStringMixin(o);
   }
 
   public void visitSub(@NotNull VCLSub o) {
     visitPsiElement(o);
   }
 
-  public void visitSynth(@NotNull VCLSynth o) {
+  public void visitUnset(@NotNull VCLUnset o) {
     visitPsiElement(o);
   }
 
@@ -180,6 +204,14 @@ public class VCLVisitor extends PsiElementVisitor {
   }
 
   public void visitVersion(@NotNull VCLVersion o) {
+    visitPsiElement(o);
+  }
+
+  public void visitInlineCMixin(@NotNull VCLInlineCMixin o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStringMixin(@NotNull VCLStringMixin o) {
     visitPsiElement(o);
   }
 

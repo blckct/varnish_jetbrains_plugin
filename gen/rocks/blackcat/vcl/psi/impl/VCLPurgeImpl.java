@@ -11,14 +11,14 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLFooImpl extends ASTWrapperPsiElement implements VCLFoo {
+public class VCLPurgeImpl extends ASTWrapperPsiElement implements VCLPurge {
 
-  public VCLFooImpl(ASTNode node) {
+  public VCLPurgeImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitFoo(this);
+    visitor.visitPurge(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

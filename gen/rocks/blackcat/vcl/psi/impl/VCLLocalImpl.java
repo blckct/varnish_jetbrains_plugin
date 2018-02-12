@@ -26,4 +26,10 @@ public class VCLLocalImpl extends ASTWrapperPsiElement implements VCLLocal {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public VCLObject getObject() {
+    return findNotNullChildByClass(VCLObject.class);
+  }
+
 }

@@ -28,8 +28,14 @@ public class VCLFCallImpl extends ASTWrapperPsiElement implements VCLFCall {
 
   @Override
   @NotNull
-  public VCLSynth getSynth() {
-    return findNotNullChildByClass(VCLSynth.class);
+  public VCLObject getObject() {
+    return findNotNullChildByClass(VCLObject.class);
+  }
+
+  @Override
+  @NotNull
+  public List<VCLOperation> getOperationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLOperation.class);
   }
 
 }

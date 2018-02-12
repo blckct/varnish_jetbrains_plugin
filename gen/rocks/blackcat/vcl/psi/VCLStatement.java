@@ -5,10 +5,13 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLStament extends PsiElement {
+public interface VCLStatement extends PsiElement {
 
   @NotNull
   List<VCLAction> getActionList();
+
+  @NotNull
+  List<VCLCall> getCallList();
 
   @NotNull
   List<VCLCompound> getCompoundList();
@@ -18,5 +21,14 @@ public interface VCLStament extends PsiElement {
 
   @NotNull
   List<VCLInlineC> getInlineCList();
+
+  @NotNull
+  List<VCLPurge> getPurgeList();
+
+  @NotNull
+  List<VCLSet> getSetList();
+
+  @NotNull
+  List<VCLUnset> getUnsetList();
 
 }

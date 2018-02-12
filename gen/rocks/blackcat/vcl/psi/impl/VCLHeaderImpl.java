@@ -28,8 +28,8 @@ public class VCLHeaderImpl extends ASTWrapperPsiElement implements VCLHeader {
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public VCLObject getObject() {
+    return findNotNullChildByClass(VCLObject.class);
   }
 
 }

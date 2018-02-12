@@ -28,26 +28,20 @@ public class VCLValueImpl extends ASTWrapperPsiElement implements VCLValue {
 
   @Override
   @Nullable
-  public VCLStrings getStrings() {
-    return findChildByClass(VCLStrings.class);
+  public VCLFCall getFCall() {
+    return findChildByClass(VCLFCall.class);
   }
 
   @Override
   @Nullable
-  public VCLVariable getVariable() {
-    return findChildByClass(VCLVariable.class);
+  public VCLLiteral getLiteral() {
+    return findChildByClass(VCLLiteral.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getNumber() {
-    return findChildByType(NUMBER);
+  public VCLObject getObject() {
+    return findChildByClass(VCLObject.class);
   }
 
 }

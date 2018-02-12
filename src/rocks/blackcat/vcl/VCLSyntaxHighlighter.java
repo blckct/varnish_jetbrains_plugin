@@ -58,6 +58,8 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             KEYWORD_BACKEND,
             KEYWORD_ELSE,
             KEYWORD_ELSEIF,
+            KEYWORD_ELIF,
+            KEYWORD_ELSIF,
             KEYWORD_IF,
             KEYWORD_IMPORT,
             KEYWORD_NEW,
@@ -65,6 +67,7 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             KEYWORD_SET,
             KEYWORD_SUB,
             KEYWORD_UNSET,
+            KEYWORD_REMOVE,
             KEYWORD_INCLUDE
     );
 

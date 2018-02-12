@@ -5,12 +5,18 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLReturn extends PsiElement {
+public interface VCLElse extends PsiElement {
 
   @Nullable
-  VCLFSynth getFSynth();
+  VCLCompound getCompound();
 
   @Nullable
-  PsiElement getIdentifier();
+  VCLCondition getCondition();
+
+  @Nullable
+  VCLElse getElse();
+
+  @Nullable
+  VCLIfStatement getIfStatement();
 
 }

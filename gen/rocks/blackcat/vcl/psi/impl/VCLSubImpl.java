@@ -27,15 +27,15 @@ public class VCLSubImpl extends ASTWrapperPsiElement implements VCLSub {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public VCLCompound getCompound() {
-    return findChildByClass(VCLCompound.class);
+    return findNotNullChildByClass(VCLCompound.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

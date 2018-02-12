@@ -17,9 +17,6 @@ public interface VCLVariable extends PsiElement {
   VCLClient getClient();
 
   @Nullable
-  VCLFoo getFoo();
-
-  @Nullable
   VCLLocal getLocal();
 
   @Nullable
@@ -27,6 +24,9 @@ public interface VCLVariable extends PsiElement {
 
   @Nullable
   VCLObj getObj();
+
+  @Nullable
+  VCLObject getObject();
 
   @Nullable
   VCLRemote getRemote();

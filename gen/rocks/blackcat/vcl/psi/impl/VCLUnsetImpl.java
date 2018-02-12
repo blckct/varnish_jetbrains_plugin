@@ -11,14 +11,14 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLStamentImpl extends ASTWrapperPsiElement implements VCLStament {
+public class VCLUnsetImpl extends ASTWrapperPsiElement implements VCLUnset {
 
-  public VCLStamentImpl(ASTNode node) {
+  public VCLUnsetImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitStament(this);
+    visitor.visitUnset(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,26 +28,8 @@ public class VCLStamentImpl extends ASTWrapperPsiElement implements VCLStament {
 
   @Override
   @NotNull
-  public List<VCLAction> getActionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLAction.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLCompound> getCompoundList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLCompound.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLIfStatement> getIfStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLIfStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLInlineC> getInlineCList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLInlineC.class);
+  public VCLObject getObject() {
+    return findNotNullChildByClass(VCLObject.class);
   }
 
 }

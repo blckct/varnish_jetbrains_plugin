@@ -13,4 +13,7 @@ public interface VCLIfStatement extends PsiElement {
   @NotNull
   VCLCondition getCondition();
 
+  @Nullable
+  VCLElse getElse();
+
 }

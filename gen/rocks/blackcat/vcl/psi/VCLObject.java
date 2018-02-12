@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLOperation extends PsiElement {
-
-  @NotNull
-  List<VCLValue> getValueList();
+public interface VCLObject extends PsiElement {
 
 }
