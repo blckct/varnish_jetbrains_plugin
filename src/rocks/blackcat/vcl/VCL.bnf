@@ -57,7 +57,8 @@
       keyword_new = 'new'
       keyword_include = 'include'
       keyword_remove = 'remove'
-
+      keyword_purge = 'purge'
+      keyword_error = 'error'
     ]
 
     name("ACL")='keyword'

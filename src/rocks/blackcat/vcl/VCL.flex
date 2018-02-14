@@ -68,6 +68,8 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
   "new"                { return KEYWORD_NEW; }
   "include"            { return KEYWORD_INCLUDE; }
   "remove"             { return KEYWORD_REMOVE; }
+  "purge"              { return KEYWORD_PURGE; }
+  "error"              { return KEYWORD_ERROR; }
 
    "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}
    "}C"                { return R_CBRACE;}

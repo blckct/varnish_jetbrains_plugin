@@ -576,6 +576,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   // RETURN | ERROR
   public static boolean BUITLIN(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BUITLIN")) return false;
+    if (!nextTokenIs(b, "<buitlin>", KEYWORD_ERROR, KEYWORD_RETURN)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUITLIN, "<buitlin>");
     r = RETURN(b, l + 1);
@@ -697,12 +698,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
   // 'error' number (OPERATION)
   public static boolean ERROR(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ERROR")) return false;
+    if (!nextTokenIs(b, KEYWORD_ERROR)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ERROR, "<error>");
-    r = consumeToken(b, "error");
-    r = r && consumeToken(b, NUMBER);
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KEYWORD_ERROR, NUMBER);
     r = r && ERROR_2(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, ERROR, r);
     return r;
   }
 
@@ -1236,10 +1237,11 @@ public class VCLParser implements PsiParser, LightPsiParser {
   // 'purge'
   public static boolean PURGE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PURGE")) return false;
+    if (!nextTokenIs(b, KEYWORD_PURGE)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PURGE, "<purge>");
-    r = consumeToken(b, "purge");
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KEYWORD_PURGE);
+    exit_section_(b, m, PURGE, r);
     return r;
   }
 

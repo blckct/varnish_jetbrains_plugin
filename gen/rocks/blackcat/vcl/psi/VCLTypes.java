@@ -74,10 +74,12 @@ public interface VCLTypes {
   IElementType KEYWORD_ELSE = new VCLTokenType("else");
   IElementType KEYWORD_ELSEIF = new VCLTokenType("elseif");
   IElementType KEYWORD_ELSIF = new VCLTokenType("elsif");
+  IElementType KEYWORD_ERROR = new VCLTokenType("error");
   IElementType KEYWORD_IF = new VCLTokenType("if");
   IElementType KEYWORD_IMPORT = new VCLTokenType("import");
   IElementType KEYWORD_INCLUDE = new VCLTokenType("include");
   IElementType KEYWORD_NEW = new VCLTokenType("new");
+  IElementType KEYWORD_PURGE = new VCLTokenType("purge");
   IElementType KEYWORD_REMOVE = new VCLTokenType("remove");
   IElementType KEYWORD_RETURN = new VCLTokenType("return");
   IElementType KEYWORD_SET = new VCLTokenType("set");
