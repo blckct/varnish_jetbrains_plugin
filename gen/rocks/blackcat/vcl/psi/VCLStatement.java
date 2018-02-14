@@ -23,6 +23,9 @@ public interface VCLStatement extends PsiElement {
   List<VCLInlineC> getInlineCList();
 
   @NotNull
+  List<VCLNew> getNewList();
+
+  @NotNull
   List<VCLPurge> getPurgeList();
 
   @NotNull

@@ -119,6 +119,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitNew(@NotNull VCLNew o) {
+    visitPsiElement(o);
+  }
+
   public void visitNow(@NotNull VCLNow o) {
     visitPsiElement(o);
   }

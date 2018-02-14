@@ -58,6 +58,12 @@ public class VCLStatementImpl extends ASTWrapperPsiElement implements VCLStateme
 
   @Override
   @NotNull
+  public List<VCLNew> getNewList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLNew.class);
+  }
+
+  @Override
+  @NotNull
   public List<VCLPurge> getPurgeList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLPurge.class);
   }

@@ -36,6 +36,7 @@ public interface VCLTypes {
   IElementType LOCAL = new VCLElementType("LOCAL");
   IElementType LONG_STRING = new VCLElementType("LONG_STRING");
   IElementType NETMASK = new VCLElementType("NETMASK");
+  IElementType NEW = new VCLElementType("NEW");
   IElementType NOW = new VCLElementType("NOW");
   IElementType OBJ = new VCLElementType("OBJ");
   IElementType OBJECT = new VCLElementType("OBJECT");
@@ -186,6 +187,9 @@ public interface VCLTypes {
       }
       else if (type == NETMASK) {
         return new VCLNetmaskImpl(node);
+      }
+      else if (type == NEW) {
+        return new VCLNewImpl(node);
       }
       else if (type == NOW) {
         return new VCLNowImpl(node);

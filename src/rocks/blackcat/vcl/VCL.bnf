@@ -83,13 +83,14 @@
   COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
   private rc_recover ::= !(RC)
 
-  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE) ';' ) *
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';' ) *
   ACTION ::= BUITLIN | F_CALL
   ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
-  F_CALL ::= OBJECT '(' OPERATION [ (',' OPERATION ) *] ')'
+  F_CALL ::= OBJECT '(' [OPERATION [ (',' OPERATION ) *]] ')'
   //SYNTH ::= 'synth('number','STRINGS')'
   PURGE ::= 'purge'
+  NEW ::= keyword_new OBJECT '=' OPERATION
 
   CALL ::= 'call' OBJECT
   SET ::= 'set' OBJECT '=' (OPERATION)

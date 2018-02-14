@@ -107,6 +107,9 @@ public class VCLParser implements PsiParser, LightPsiParser {
     else if (t == NETMASK) {
       r = NETMASK(b, 0);
     }
+    else if (t == NEW) {
+      r = NEW(b, 0);
+    }
     else if (t == NOW) {
       r = NOW(b, 0);
     }
@@ -774,7 +777,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // OBJECT '(' OPERATION [ (',' OPERATION ) *] ')'
+  // OBJECT '(' [OPERATION [ (',' OPERATION ) *]] ')'
   public static boolean F_CALL(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "F_CALL")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
@@ -782,35 +785,52 @@ public class VCLParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = OBJECT(b, l + 1);
     r = r && consumeToken(b, LP);
-    r = r && OPERATION(b, l + 1);
-    r = r && F_CALL_3(b, l + 1);
+    r = r && F_CALL_2(b, l + 1);
     r = r && consumeToken(b, RP);
     exit_section_(b, m, F_CALL, r);
     return r;
   }
 
+  // [OPERATION [ (',' OPERATION ) *]]
+  private static boolean F_CALL_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_2")) return false;
+    F_CALL_2_0(b, l + 1);
+    return true;
+  }
+
+  // OPERATION [ (',' OPERATION ) *]
+  private static boolean F_CALL_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = OPERATION(b, l + 1);
+    r = r && F_CALL_2_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // [ (',' OPERATION ) *]
-  private static boolean F_CALL_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "F_CALL_3")) return false;
-    F_CALL_3_0(b, l + 1);
+  private static boolean F_CALL_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_2_0_1")) return false;
+    F_CALL_2_0_1_0(b, l + 1);
     return true;
   }
 
   // (',' OPERATION ) *
-  private static boolean F_CALL_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "F_CALL_3_0")) return false;
+  private static boolean F_CALL_2_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_2_0_1_0")) return false;
     int c = current_position_(b);
     while (true) {
-      if (!F_CALL_3_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "F_CALL_3_0", c)) break;
+      if (!F_CALL_2_0_1_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "F_CALL_2_0_1_0", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // ',' OPERATION
-  private static boolean F_CALL_3_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "F_CALL_3_0_0")) return false;
+  private static boolean F_CALL_2_0_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_2_0_1_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
@@ -970,6 +990,21 @@ public class VCLParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "/");
     r = r && consumeToken(b, NUMBER);
     exit_section_(b, m, NETMASK, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // keyword_new OBJECT '=' OPERATION
+  public static boolean NEW(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NEW")) return false;
+    if (!nextTokenIs(b, KEYWORD_NEW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KEYWORD_NEW);
+    r = r && OBJECT(b, l + 1);
+    r = r && consumeToken(b, EQ);
+    r = r && OPERATION(b, l + 1);
+    exit_section_(b, m, NEW, r);
     return r;
   }
 
@@ -1456,7 +1491,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE) ';' ) *
+  // (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';' ) *
   public static boolean STATEMENT(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT")) return false;
     Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
@@ -1470,7 +1505,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE) ';'
+  // COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';'
   private static boolean STATEMENT_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT_0")) return false;
     boolean r;
@@ -1483,7 +1518,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (SET | UNSET | ACTION | CALL | PURGE) ';'
+  // (SET | UNSET | ACTION | CALL | PURGE | NEW) ';'
   private static boolean STATEMENT_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT_0_3")) return false;
     boolean r;
@@ -1494,7 +1529,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // SET | UNSET | ACTION | CALL | PURGE
+  // SET | UNSET | ACTION | CALL | PURGE | NEW
   private static boolean STATEMENT_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT_0_3_0")) return false;
     boolean r;
@@ -1504,6 +1539,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     if (!r) r = ACTION(b, l + 1);
     if (!r) r = CALL(b, l + 1);
     if (!r) r = PURGE(b, l + 1);
+    if (!r) r = NEW(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
