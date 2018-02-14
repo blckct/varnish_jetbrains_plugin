@@ -74,8 +74,8 @@
   PROBE ::= 'probe' '{' PROBE_INTERNAL '}'
   ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
-  ACL_PART  ::= ['!'] ( STRINGS | NETMASK)
-  NETMASK ::= ('"' ip '"'|"'" ip "'") ('/'number)?
+  ACL_PART  ::= ['!'] ( NETMASK | string [])
+  NETMASK ::= string '/' number
   SUB ::= 'sub' identifier COMPOUND
   private not_sub ::= ! RC
 
@@ -108,7 +108,7 @@
   VALUE ::= ['!'] (F_CALL|LITERAL|OBJECT)
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
-  LITERAL ::= STRINGS | number | VARIABLE | identifier | OBJECT | duration
+  LITERAL ::= NETMASK | STRINGS | number | VARIABLE | identifier | OBJECT | duration
   OBJECT ::= identifier ['DOT' identifier]
   //VARIABLES
   VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ

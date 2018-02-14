@@ -28,14 +28,14 @@ public class VCLNetmaskImpl extends ASTWrapperPsiElement implements VCLNetmask {
 
   @Override
   @NotNull
-  public PsiElement getIp() {
-    return findNotNullChildByType(IP);
+  public PsiElement getNumber() {
+    return findNotNullChildByType(NUMBER);
   }
 
   @Override
-  @Nullable
-  public PsiElement getNumber() {
-    return findChildByType(NUMBER);
+  @NotNull
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
   }
 
 }

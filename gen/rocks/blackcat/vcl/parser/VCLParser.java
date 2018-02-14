@@ -235,7 +235,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ['!'] ( STRINGS | NETMASK)
+  // ['!'] ( NETMASK | string [])
   public static boolean ACL_PART(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ACL_PART")) return false;
     boolean r;
@@ -253,15 +253,31 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // STRINGS | NETMASK
+  // NETMASK | string []
   private static boolean ACL_PART_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ACL_PART_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = STRINGS(b, l + 1);
-    if (!r) r = NETMASK(b, l + 1);
+    r = NETMASK(b, l + 1);
+    if (!r) r = ACL_PART_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // string []
+  private static boolean ACL_PART_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ACL_PART_1_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    r = r && ACL_PART_1_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // []
+  private static boolean ACL_PART_1_1_1(PsiBuilder b, int l) {
+    return true;
   }
 
   /* ********************************************************** */
@@ -901,12 +917,13 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRINGS | number | VARIABLE | identifier | OBJECT | duration
+  // NETMASK | STRINGS | number | VARIABLE | identifier | OBJECT | duration
   public static boolean LITERAL(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LITERAL")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, LITERAL, "<literal>");
-    r = STRINGS(b, l + 1);
+    r = NETMASK(b, l + 1);
+    if (!r) r = STRINGS(b, l + 1);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = VARIABLE(b, l + 1);
     if (!r) r = consumeToken(b, IDENTIFIER);
@@ -942,67 +959,16 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ('"' ip '"'|"'" ip "'") ('/'number)?
+  // string '/' number
   public static boolean NETMASK(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NETMASK")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NETMASK, "<netmask>");
-    r = NETMASK_0(b, l + 1);
-    r = r && NETMASK_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // '"' ip '"'|"'" ip "'"
-  private static boolean NETMASK_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NETMASK_0")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = NETMASK_0_0(b, l + 1);
-    if (!r) r = NETMASK_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '"' ip '"'
-  private static boolean NETMASK_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NETMASK_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "\"");
-    r = r && consumeToken(b, IP);
-    r = r && consumeToken(b, "\"");
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // "'" ip "'"
-  private static boolean NETMASK_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NETMASK_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "'");
-    r = r && consumeToken(b, IP);
-    r = r && consumeToken(b, "'");
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ('/'number)?
-  private static boolean NETMASK_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NETMASK_1")) return false;
-    NETMASK_1_0(b, l + 1);
-    return true;
-  }
-
-  // '/'number
-  private static boolean NETMASK_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NETMASK_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "/");
+    r = consumeToken(b, STRING);
+    r = r && consumeToken(b, "/");
     r = r && consumeToken(b, NUMBER);
-    exit_section_(b, m, null, r);
+    exit_section_(b, m, NETMASK, r);
     return r;
   }
 

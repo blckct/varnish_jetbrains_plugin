@@ -28,6 +28,12 @@ public class VCLLiteralImpl extends ASTWrapperPsiElement implements VCLLiteral {
 
   @Override
   @Nullable
+  public VCLNetmask getNetmask() {
+    return findChildByClass(VCLNetmask.class);
+  }
+
+  @Override
+  @Nullable
   public VCLObject getObject() {
     return findChildByClass(VCLObject.class);
   }

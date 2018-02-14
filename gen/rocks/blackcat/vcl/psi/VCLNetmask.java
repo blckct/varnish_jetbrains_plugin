@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface VCLNetmask extends PsiElement {
 
   @NotNull
-  PsiElement getIp();
-
-  @Nullable
   PsiElement getNumber();
+
+  @NotNull
+  PsiElement getString();
 
 }

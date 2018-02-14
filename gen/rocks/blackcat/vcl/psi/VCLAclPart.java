@@ -11,6 +11,6 @@ public interface VCLAclPart extends PsiElement {
   VCLNetmask getNetmask();
 
   @Nullable
-  VCLStrings getStrings();
+  PsiElement getString();
 
 }

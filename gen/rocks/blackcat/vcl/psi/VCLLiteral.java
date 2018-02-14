@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface VCLLiteral extends PsiElement {
 
   @Nullable
+  VCLNetmask getNetmask();
+
+  @Nullable
   VCLObject getObject();
 
   @Nullable
