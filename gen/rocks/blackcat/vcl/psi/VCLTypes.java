@@ -22,6 +22,8 @@ public interface VCLTypes {
   IElementType CLIENT = new VCLElementType("CLIENT");
   IElementType COMPOUND = new VCLElementType("COMPOUND");
   IElementType CONDITION = new VCLElementType("CONDITION");
+  IElementType DIRECTOR = new VCLElementType("DIRECTOR");
+  IElementType DIRECTOR_ENTRY = new VCLElementType("DIRECTOR_ENTRY");
   IElementType ELSE = new VCLElementType("ELSE");
   IElementType ERROR = new VCLElementType("ERROR");
   IElementType EXPRESSION = new VCLElementType("EXPRESSION");
@@ -71,6 +73,7 @@ public interface VCLTypes {
   IElementType IP = new VCLTokenType("ip");
   IElementType KEYWORD_ACL = new VCLTokenType("acl");
   IElementType KEYWORD_BACKEND = new VCLTokenType("backend");
+  IElementType KEYWORD_DIRECTOR = new VCLTokenType("director");
   IElementType KEYWORD_ELIF = new VCLTokenType("elif");
   IElementType KEYWORD_ELSE = new VCLTokenType("else");
   IElementType KEYWORD_ELSEIF = new VCLTokenType("elseif");
@@ -145,6 +148,12 @@ public interface VCLTypes {
       }
       else if (type == CONDITION) {
         return new VCLConditionImpl(node);
+      }
+      else if (type == DIRECTOR) {
+        return new VCLDirectorImpl(node);
+      }
+      else if (type == DIRECTOR_ENTRY) {
+        return new VCLDirectorEntryImpl(node);
       }
       else if (type == ELSE) {
         return new VCLElseImpl(node);

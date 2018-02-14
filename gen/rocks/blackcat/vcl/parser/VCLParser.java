@@ -65,6 +65,12 @@ public class VCLParser implements PsiParser, LightPsiParser {
     else if (t == CONDITION) {
       r = CONDITION(b, 0);
     }
+    else if (t == DIRECTOR) {
+      r = DIRECTOR(b, 0);
+    }
+    else if (t == DIRECTOR_ENTRY) {
+      r = DIRECTOR_ENTRY(b, 0);
+    }
     else if (t == ELSE) {
       r = ELSE(b, 0);
     }
@@ -637,6 +643,135 @@ public class VCLParser implements PsiParser, LightPsiParser {
     r = r && EXPRESSION(b, l + 1);
     r = r && consumeToken(b, RP);
     exit_section_(b, m, CONDITION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // keyword_director identifier identifier '{' [('{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY )*] '}'
+  public static boolean DIRECTOR(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR")) return false;
+    if (!nextTokenIs(b, KEYWORD_DIRECTOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KEYWORD_DIRECTOR, IDENTIFIER, IDENTIFIER, LC);
+    r = r && DIRECTOR_4(b, l + 1);
+    r = r && consumeToken(b, RC);
+    exit_section_(b, m, DIRECTOR, r);
+    return r;
+  }
+
+  // [('{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY )*]
+  private static boolean DIRECTOR_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_4")) return false;
+    DIRECTOR_4_0(b, l + 1);
+    return true;
+  }
+
+  // ('{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY )*
+  private static boolean DIRECTOR_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_4_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!DIRECTOR_4_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "DIRECTOR_4_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // '{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY
+  private static boolean DIRECTOR_4_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_4_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = DIRECTOR_4_0_0_0(b, l + 1);
+    if (!r) r = DIRECTOR_ENTRY(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '{' DIRECTOR_ENTRY * '}'
+  private static boolean DIRECTOR_4_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_4_0_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LC);
+    r = r && DIRECTOR_4_0_0_0_1(b, l + 1);
+    r = r && consumeToken(b, RC);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // DIRECTOR_ENTRY *
+  private static boolean DIRECTOR_4_0_0_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_4_0_0_0_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!DIRECTOR_ENTRY(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "DIRECTOR_4_0_0_0_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // '.'(keyword_backend|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')
+  public static boolean DIRECTOR_ENTRY(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_ENTRY")) return false;
+    if (!nextTokenIs(b, DOT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOT);
+    r = r && DIRECTOR_ENTRY_1(b, l + 1);
+    r = r && consumeToken(b, EQ);
+    r = r && DIRECTOR_ENTRY_3(b, l + 1);
+    exit_section_(b, m, DIRECTOR_ENTRY, r);
+    return r;
+  }
+
+  // keyword_backend|identifier
+  private static boolean DIRECTOR_ENTRY_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_ENTRY_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KEYWORD_BACKEND);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}'
+  private static boolean DIRECTOR_ENTRY_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_ENTRY_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = DIRECTOR_ENTRY_3_0(b, l + 1);
+    if (!r) r = BACKEND_INTERNAL(b, l + 1);
+    if (!r) r = DIRECTOR_ENTRY_3_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // VALUE ';'
+  private static boolean DIRECTOR_ENTRY_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_ENTRY_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = VALUE(b, l + 1);
+    r = r && consumeToken(b, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '{' DIRECTOR_ENTRY'}'
+  private static boolean DIRECTOR_ENTRY_3_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DIRECTOR_ENTRY_3_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LC);
+    r = r && DIRECTOR_ENTRY(b, l + 1);
+    r = r && consumeToken(b, RC);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1709,7 +1844,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C)*
+  // [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
   static boolean root(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "root")) return false;
     boolean r;
@@ -1727,7 +1862,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C)*
+  // (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
   private static boolean root_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "root_1")) return false;
     int c = current_position_(b);
@@ -1739,7 +1874,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C
+  // ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR
   private static boolean root_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "root_1_0")) return false;
     boolean r;
@@ -1751,6 +1886,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     if (!r) r = PROBE(b, l + 1);
     if (!r) r = INCLUDE(b, l + 1);
     if (!r) r = INLINE_C(b, l + 1);
+    if (!r) r = DIRECTOR(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

@@ -63,6 +63,14 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDirector(@NotNull VCLDirector o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDirectorEntry(@NotNull VCLDirectorEntry o) {
+    visitPsiElement(o);
+  }
+
   public void visitElse(@NotNull VCLElse o) {
     visitPsiElement(o);
   }

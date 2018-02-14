@@ -59,6 +59,7 @@
       keyword_remove = 'remove'
       keyword_purge = 'purge'
       keyword_error = 'error'
+      keyword_director = 'director'
     ]
 
     name("ACL")='keyword'
@@ -66,7 +67,7 @@
   }
 
 //  literal_expr ::= number | string | float
-  root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C)*
+  root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
 
   VERSION ::= 'vcl' number ';'
   IMPORT ::= 'import' identifier ';'
@@ -163,3 +164,6 @@
                      | '.initial' '=' number ';'
 
   private semi_recover ::= !(SEMI);
+
+  DIRECTOR ::= keyword_director identifier identifier '{' [('{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY )*] '}'
+  DIRECTOR_ENTRY ::= '.'(keyword_backend|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')
