@@ -34,12 +34,6 @@ public class VCLStatementImpl extends ASTWrapperPsiElement implements VCLStateme
 
   @Override
   @NotNull
-  public List<VCLCall> getCallList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLCall.class);
-  }
-
-  @Override
-  @NotNull
   public List<VCLCompound> getCompoundList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLCompound.class);
   }
@@ -54,30 +48,6 @@ public class VCLStatementImpl extends ASTWrapperPsiElement implements VCLStateme
   @NotNull
   public List<VCLInlineC> getInlineCList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLInlineC.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLNew> getNewList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLNew.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLPurge> getPurgeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLPurge.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLSet> getSetList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLSet.class);
-  }
-
-  @Override
-  @NotNull
-  public List<VCLUnset> getUnsetList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLUnset.class);
   }
 
 }

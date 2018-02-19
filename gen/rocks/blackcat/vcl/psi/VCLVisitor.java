@@ -139,6 +139,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSynthetic(@NotNull VCLSynthetic o) {
+    visitPsiElement(o);
+  }
+
   public void visitUnset(@NotNull VCLUnset o) {
     visitPsiElement(o);
   }

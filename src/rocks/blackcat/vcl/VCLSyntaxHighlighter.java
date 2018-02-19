@@ -71,7 +71,8 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             KEYWORD_INCLUDE,
             KEYWORD_PURGE,
             KEYWORD_ERROR,
-            KEYWORD_DIRECTOR
+            KEYWORD_DIRECTOR,
+            KEYWORD_SYNTHETIC
     );
 
     @NotNull

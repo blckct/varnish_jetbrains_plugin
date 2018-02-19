@@ -72,6 +72,7 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
   "purge"              { return KEYWORD_PURGE; }
   "error"              { return KEYWORD_ERROR; }
   "director"           { return KEYWORD_DIRECTOR; }
+  "synthetic"          { return KEYWORD_SYNTHETIC; }
 
    "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}
    "}C"                { return R_CBRACE;}

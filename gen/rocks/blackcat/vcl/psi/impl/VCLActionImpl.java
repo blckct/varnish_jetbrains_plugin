@@ -28,14 +28,56 @@ public class VCLActionImpl extends ASTWrapperPsiElement implements VCLAction {
 
   @Override
   @Nullable
-  public VCLBuitlin getBuitlin() {
-    return findChildByClass(VCLBuitlin.class);
+  public VCLCall getCall() {
+    return findChildByClass(VCLCall.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLError getError() {
+    return findChildByClass(VCLError.class);
   }
 
   @Override
   @Nullable
   public VCLFCall getFCall() {
     return findChildByClass(VCLFCall.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLNew getNew() {
+    return findChildByClass(VCLNew.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLPurge getPurge() {
+    return findChildByClass(VCLPurge.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLReturn getReturn() {
+    return findChildByClass(VCLReturn.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLSet getSet() {
+    return findChildByClass(VCLSet.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLSynthetic getSynthetic() {
+    return findChildByClass(VCLSynthetic.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLUnset getUnset() {
+    return findChildByClass(VCLUnset.class);
   }
 
 }

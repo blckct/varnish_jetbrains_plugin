@@ -41,6 +41,7 @@ public interface VCLTypes {
   IElementType STATEMENT = new VCLElementType("STATEMENT");
   IElementType STRINGS = new VCLElementType("STRINGS");
   IElementType SUB = new VCLElementType("SUB");
+  IElementType SYNTHETIC = new VCLElementType("SYNTHETIC");
   IElementType UNSET = new VCLElementType("UNSET");
   IElementType VALUE = new VCLElementType("VALUE");
   IElementType VERSION = new VCLElementType("VERSION");
@@ -71,6 +72,7 @@ public interface VCLTypes {
   IElementType KEYWORD_RETURN = new VCLTokenType("return");
   IElementType KEYWORD_SET = new VCLTokenType("set");
   IElementType KEYWORD_SUB = new VCLTokenType("sub");
+  IElementType KEYWORD_SYNTHETIC = new VCLTokenType("synthetic");
   IElementType KEYWORD_UNSET = new VCLTokenType("unset");
   IElementType LC = new VCLTokenType("{");
   IElementType LINE_COMMENT = new VCLTokenType("line_comment");
@@ -190,6 +192,9 @@ public interface VCLTypes {
       }
       else if (type == SUB) {
         return new VCLSubImpl(node);
+      }
+      else if (type == SYNTHETIC) {
+        return new VCLSyntheticImpl(node);
       }
       else if (type == UNSET) {
         return new VCLUnsetImpl(node);

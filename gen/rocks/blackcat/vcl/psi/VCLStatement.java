@@ -11,9 +11,6 @@ public interface VCLStatement extends PsiElement {
   List<VCLAction> getActionList();
 
   @NotNull
-  List<VCLCall> getCallList();
-
-  @NotNull
   List<VCLCompound> getCompoundList();
 
   @NotNull
@@ -21,17 +18,5 @@ public interface VCLStatement extends PsiElement {
 
   @NotNull
   List<VCLInlineC> getInlineCList();
-
-  @NotNull
-  List<VCLNew> getNewList();
-
-  @NotNull
-  List<VCLPurge> getPurgeList();
-
-  @NotNull
-  List<VCLSet> getSetList();
-
-  @NotNull
-  List<VCLUnset> getUnsetList();
 
 }

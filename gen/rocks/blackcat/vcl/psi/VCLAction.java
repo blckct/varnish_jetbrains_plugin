@@ -8,9 +8,30 @@ import com.intellij.psi.PsiElement;
 public interface VCLAction extends PsiElement {
 
   @Nullable
-  VCLBuitlin getBuitlin();
+  VCLCall getCall();
+
+  @Nullable
+  VCLError getError();
 
   @Nullable
   VCLFCall getFCall();
+
+  @Nullable
+  VCLNew getNew();
+
+  @Nullable
+  VCLPurge getPurge();
+
+  @Nullable
+  VCLReturn getReturn();
+
+  @Nullable
+  VCLSet getSet();
+
+  @Nullable
+  VCLSynthetic getSynthetic();
+
+  @Nullable
+  VCLUnset getUnset();
 
 }

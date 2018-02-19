@@ -122,6 +122,9 @@ public class VCLParser implements PsiParser, LightPsiParser {
     else if (t == SUB) {
       r = SUB(b, 0);
     }
+    else if (t == SYNTHETIC) {
+      r = SYNTHETIC(b, 0);
+    }
     else if (t == UNSET) {
       r = UNSET(b, 0);
     }
@@ -239,13 +242,20 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BUITLIN | F_CALL
+  // F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN | SYNTHETIC
   public static boolean ACTION(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ACTION")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ACTION, "<action>");
-    r = BUITLIN(b, l + 1);
-    if (!r) r = F_CALL(b, l + 1);
+    r = F_CALL(b, l + 1);
+    if (!r) r = SET(b, l + 1);
+    if (!r) r = UNSET(b, l + 1);
+    if (!r) r = CALL(b, l + 1);
+    if (!r) r = PURGE(b, l + 1);
+    if (!r) r = NEW(b, l + 1);
+    if (!r) r = ERROR(b, l + 1);
+    if (!r) r = RETURN(b, l + 1);
+    if (!r) r = SYNTHETIC(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -541,17 +551,27 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // OBJECT '(' [OPERATION [ (',' OPERATION ) *]] ')'
+  // (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
   public static boolean F_CALL(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "F_CALL")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = OBJECT(b, l + 1);
+    r = F_CALL_0(b, l + 1);
     r = r && consumeToken(b, LP);
     r = r && F_CALL_2(b, l + 1);
     r = r && consumeToken(b, RP);
     exit_section_(b, m, F_CALL, r);
+    return r;
+  }
+
+  // (OBJECT )
+  private static boolean F_CALL_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "F_CALL_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = OBJECT(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -954,7 +974,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';' ) *
+  // (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' ) *
   public static boolean STATEMENT(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT")) return false;
     Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
@@ -968,7 +988,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';'
+  // COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';'
   private static boolean STATEMENT_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT_0")) return false;
     boolean r;
@@ -981,28 +1001,13 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (SET | UNSET | ACTION | CALL | PURGE | NEW) ';'
+  // ACTION ';'
   private static boolean STATEMENT_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "STATEMENT_0_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = STATEMENT_0_3_0(b, l + 1);
+    r = ACTION(b, l + 1);
     r = r && consumeToken(b, SEMI);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // SET | UNSET | ACTION | CALL | PURGE | NEW
-  private static boolean STATEMENT_0_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "STATEMENT_0_3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = SET(b, l + 1);
-    if (!r) r = UNSET(b, l + 1);
-    if (!r) r = ACTION(b, l + 1);
-    if (!r) r = CALL(b, l + 1);
-    if (!r) r = PURGE(b, l + 1);
-    if (!r) r = NEW(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1030,6 +1035,19 @@ public class VCLParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, KEYWORD_SUB, IDENTIFIER);
     r = r && COMPOUND(b, l + 1);
     exit_section_(b, m, SUB, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // keyword_synthetic STRINGS
+  public static boolean SYNTHETIC(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SYNTHETIC")) return false;
+    if (!nextTokenIs(b, KEYWORD_SYNTHETIC)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KEYWORD_SYNTHETIC);
+    r = r && STRINGS(b, l + 1);
+    exit_section_(b, m, SYNTHETIC, r);
     return r;
   }
 
