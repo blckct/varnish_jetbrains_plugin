@@ -32,6 +32,7 @@
       string="regexp:('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")"
       //string="regexp:(\"([^\n\"]|.*)\"|'(.*|[^\n'])')"
       //private identifier='regexp:\p{Alpha}[\w-]*'
+      property="regexp:(\.[a-zA-Z][a-zA-Z0-9_-.]*)"
       identifier="regexp:([a-zA-Z][a-zA-Z0-9_-.]*)"
       block_comment='regexp:/\*..*\*/'
       operator='regexp: \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|/=|>|<|/|\+|\*|-|\|\|'
@@ -79,12 +80,12 @@
   ACL_PART  ::= ['!'] ( NETMASK | string [])
   NETMASK ::= string '/' number
   SUB ::= 'sub' identifier COMPOUND
-  private not_sub ::= ! RC
+  //private not_sub ::= ! RC
 
   COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
-  private rc_recover ::= !(RC)
+  //private rc_recover ::= !(RC)
 
-  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW) ';' ) *
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | (SET | UNSET | ACTION | CALL | PURGE | NEW ) ';' ) *
   ACTION ::= BUITLIN | F_CALL
   ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
@@ -111,10 +112,20 @@
   VALUE ::= ['!'] (F_CALL|LITERAL|OBJECT)
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
-  LITERAL ::= NETMASK | STRINGS | number | VARIABLE | identifier | OBJECT | duration
+  LITERAL ::= NETMASK | STRINGS | number | identifier | OBJECT | duration
   OBJECT ::= identifier ['DOT' identifier]
+
+  F_SYNTH ::= 'synth(' number ',' STRINGS ')'
+
+  DIRECTOR ::= keyword_director identifier identifier '{' [ ('{' OBJECT_INTERNAL *'}' | OBJECT_INTERNAL) *]'}'
+  BACKEND ::= 'backend' identifier '{' [OBJECT_INTERNAL *] '}'
+
+  OBJECT_INTERNAL ::= (property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL'}')
+
+  RETURN ::= 'return' '('( identifier | F_SYNTH) ')'
+
   //VARIABLES
-  VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
+  /*VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
                 | REQ_TOP | RESP | SERVER | STORAGE |  OBJECT
   //FOO ::= 'req.url'
   BEREQ ::= 'bereq'  ['.'   ('backend' | 'between_bytes_timeout' | 'body' | 'connect_timeout'
@@ -141,12 +152,10 @@
   SERVER ::= 'server.' ('hostname' | 'identity' | 'ip')
   STORAGE ::= 'storage.' identifier '.' ('free_space' | 'used_space' | 'happy')
   HEADER ::= OBJECT //'http.' identifier
-
-  RETURN ::= 'return' '('( identifier | F_SYNTH) ')'
+*/
   //RETURN ::= 'return' '('('fail' | 'pipe' | 'restart' | 'pass' | F_SYNTH) ')'
-  F_SYNTH ::= 'synth(' number ',' STRINGS ')'
-  BACKEND ::= 'backend' identifier '{' BACKEND_INTERNAL * '}'
-  BACKEND_INTERNAL ::= '.host' '=' STRINGS ';'
+
+  /*BACKEND_INTERNAL ::= '.host' '=' STRINGS ';'
                         | '.port' '=' STRINGS ';'
                         |  '.max_connections' '=' number ';'
                         |  '.first_byte_timeout' '=' duration ';'
@@ -162,8 +171,6 @@
                      | '.request' '=' STRINGS * ';'
                      | '.expected_response' '=' number ';'
                      | '.initial' '=' number ';'
+  DIRECTOR_ENTRY ::= (property|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')*/
+  //private semi_recover ::= !(SEMI);
 
-  private semi_recover ::= !(SEMI);
-
-  DIRECTOR ::= keyword_director identifier identifier '{' [('{' DIRECTOR_ENTRY * '}' |DIRECTOR_ENTRY )*] '}'
-  DIRECTOR_ENTRY ::= '.'(keyword_backend|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')

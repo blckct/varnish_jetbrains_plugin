@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface VCLDirector extends PsiElement {
 
   @NotNull
-  List<VCLDirectorEntry> getDirectorEntryList();
+  List<VCLObjectInternal> getObjectInternalList();
 
 }

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface VCLBackend extends PsiElement {
 
   @NotNull
-  List<VCLBackendInternal> getBackendInternalList();
+  List<VCLObjectInternal> getObjectInternalList();
 
   @NotNull
   PsiElement getIdentifier();

@@ -46,12 +46,6 @@ public class VCLLiteralImpl extends ASTWrapperPsiElement implements VCLLiteral {
 
   @Override
   @Nullable
-  public VCLVariable getVariable() {
-    return findChildByClass(VCLVariable.class);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getDuration() {
     return findChildByType(DURATION);
   }

@@ -28,8 +28,8 @@ public class VCLDirectorImpl extends ASTWrapperPsiElement implements VCLDirector
 
   @Override
   @NotNull
-  public List<VCLDirectorEntry> getDirectorEntryList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLDirectorEntry.class);
+  public List<VCLObjectInternal> getObjectInternalList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLObjectInternal.class);
   }
 
 }

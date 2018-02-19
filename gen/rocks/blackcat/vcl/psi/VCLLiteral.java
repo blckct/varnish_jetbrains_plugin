@@ -17,9 +17,6 @@ public interface VCLLiteral extends PsiElement {
   VCLStrings getStrings();
 
   @Nullable
-  VCLVariable getVariable();
-
-  @Nullable
   PsiElement getDuration();
 
   @Nullable

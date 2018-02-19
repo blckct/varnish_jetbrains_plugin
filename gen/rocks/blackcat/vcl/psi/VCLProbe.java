@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface VCLProbe extends PsiElement {
 
-  @NotNull
-  VCLProbeInternal getProbeInternal();
-
 }

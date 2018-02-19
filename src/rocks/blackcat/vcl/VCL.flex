@@ -29,6 +29,7 @@ NUMBER=[0-9]+(\.[0-9]*)?
 DURATION=[0-9]+(\.[0-9]*)?(ms|s|m|h|d|w|y)
 IP=\"\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b\"
 STRING=('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")
+PROPERTY=(\.[a-zA-Z]([a-zA-Z0-9_-]|\.)*)
 IDENTIFIER=([a-zA-Z]([a-zA-Z0-9_-]|\.)*)
 BLOCK_COMMENT= "/*"( [^*] | (\*+[^*/]) )*\*+\/
 OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
@@ -84,6 +85,7 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
   {DURATION}           { return DURATION; }
   {IP}                 { return IP; }
   {STRING}             { return STRING; }
+  {PROPERTY}           { return PROPERTY; }
   {IDENTIFIER}         { return IDENTIFIER; }
   {BLOCK_COMMENT}      { return BLOCK_COMMENT; }
   {OPERATOR}           { return OPERATOR; }

@@ -28,8 +28,8 @@ public class VCLBackendImpl extends ASTWrapperPsiElement implements VCLBackend {
 
   @Override
   @NotNull
-  public List<VCLBackendInternal> getBackendInternalList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLBackendInternal.class);
+  public List<VCLObjectInternal> getObjectInternalList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLObjectInternal.class);
   }
 
   @Override

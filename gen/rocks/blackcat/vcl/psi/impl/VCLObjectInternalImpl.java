@@ -11,19 +11,43 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLRemoteImpl extends ASTWrapperPsiElement implements VCLRemote {
+public class VCLObjectInternalImpl extends ASTWrapperPsiElement implements VCLObjectInternal {
 
-  public VCLRemoteImpl(ASTNode node) {
+  public VCLObjectInternalImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitRemote(this);
+    visitor.visitObjectInternal(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof VCLVisitor) accept((VCLVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public VCLObjectInternal getObjectInternal() {
+    return findChildByClass(VCLObjectInternal.class);
+  }
+
+  @Override
+  @Nullable
+  public VCLValue getValue() {
+    return findChildByClass(VCLValue.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getProperty() {
+    return findChildByType(PROPERTY);
   }
 
 }

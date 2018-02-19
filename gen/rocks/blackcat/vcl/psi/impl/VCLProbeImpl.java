@@ -26,10 +26,4 @@ public class VCLProbeImpl extends ASTWrapperPsiElement implements VCLProbe {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public VCLProbeInternal getProbeInternal() {
-    return findNotNullChildByClass(VCLProbeInternal.class);
-  }
-
 }
