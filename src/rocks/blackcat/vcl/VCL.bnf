@@ -109,7 +109,8 @@
   ELSE ::= ('else' (COMPOUND | IF_STATEMENT)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
   CONDITION ::= '(' EXPRESSION ')'
   EXPRESSION ::= (CONDITION | F_CALL | OPERATION | OBJECT | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
-  OPERATION ::= VALUE [(operator VALUE) *]
+  OPERATION ::= OPERATION_INTERNAL [([operator *] OPERATION_INTERNAL) *]
+  OPERATION_INTERNAL ::= '(' OPERATION ')'| VALUE
   VALUE ::= ['!'] (F_CALL|LITERAL|OBJECT)
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
