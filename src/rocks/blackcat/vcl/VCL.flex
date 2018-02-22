@@ -36,6 +36,7 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
 
 %state INLINE_C
 %state LONG_STRING
+%state LONG_STRING_END
 
 %{
   private int c_start;
@@ -103,10 +104,14 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
 
 <LONG_STRING> {
     //"}C" {yybegin(YYINITIAL); return R_CBRACE;}
-    "\"}" {yybegin(YYINITIAL); yypushback(2); zzStartRead = s_start; return STRING_CONTENT; }
+    "\"}" {yybegin(LONG_STRING_END); yypushback(2); zzStartRead = s_start; return STRING_CONTENT; }
     .   {}
     \n  {}
     <<EOF>> {yybegin(YYINITIAL); return STRING_CONTENT;}
+}
+
+<LONG_STRING_END> {
+    "\"}" {yybegin(YYINITIAL); return R_LSTRING; }
 }
 
 [^] { return BAD_CHARACTER; }
