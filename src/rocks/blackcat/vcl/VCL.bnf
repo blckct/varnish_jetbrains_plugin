@@ -58,7 +58,7 @@
       keyword_new = 'new'
       keyword_include = 'include'
       keyword_remove = 'remove'
-      keyword_purge = 'purge'
+      //keyword_purge = 'purge' //It can't be a keyword as it's not restricted
       keyword_error = 'error'
       keyword_director = 'director'
       keyword_synthetic = 'synthetic'

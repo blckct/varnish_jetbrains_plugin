@@ -70,7 +70,7 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
   "new"                { return KEYWORD_NEW; }
   "include"            { return KEYWORD_INCLUDE; }
   "remove"             { return KEYWORD_REMOVE; }
-  "purge"              { return KEYWORD_PURGE; }
+//  "purge"              { return KEYWORD_PURGE; } //It can't be a keyword as it's not restricted
   "error"              { return KEYWORD_ERROR; }
   "director"           { return KEYWORD_DIRECTOR; }
   "synthetic"          { return KEYWORD_SYNTHETIC; }

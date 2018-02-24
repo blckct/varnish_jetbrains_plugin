@@ -69,7 +69,7 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
             KEYWORD_UNSET,
             KEYWORD_REMOVE,
             KEYWORD_INCLUDE,
-            KEYWORD_PURGE,
+//            KEYWORD_PURGE, //It can't be a keyword as it's not restricted
             KEYWORD_ERROR,
             KEYWORD_DIRECTOR,
             KEYWORD_SYNTHETIC

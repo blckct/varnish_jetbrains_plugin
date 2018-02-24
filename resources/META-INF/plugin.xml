@@ -45,6 +45,7 @@
     <lang.braceMatcher language="VCL" implementationClass="rocks.blackcat.vcl.codeinsight.VCLBraceMatcher"/>
 
     <languageInjector implementation="rocks.blackcat.vcl.psi.VCL_C_LanguageInjector" />
+    <annotator language="VCL" implementationClass="rocks.blackcat.vcl.VCLAnnotator"/>
   </extensions>
 
   <actions>
