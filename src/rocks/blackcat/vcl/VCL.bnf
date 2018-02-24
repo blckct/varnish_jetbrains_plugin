@@ -87,7 +87,7 @@
   //private rc_recover ::= !(RC)
 
   STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | INCLUDE) *
-  ACTION ::= F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN | SYNTHETIC
+  ACTION ::= SYNTHETIC | F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
   ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
   F_CALL ::= (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
@@ -97,7 +97,7 @@
   CALL ::= 'call' OBJECT
   SET ::= 'set' OBJECT '=' (OPERATION)
   UNSET ::= ('unset' | 'remove') OBJECT
-  SYNTHETIC ::= keyword_synthetic STRINGS
+  SYNTHETIC ::= 'synthetic' (STRINGS | '(' STRINGS')') //Can't find a simple way to deal with it right now
 
   INLINE_C ::= 'C{' C_CONTENT '}C' {implements="rocks.blackcat.vcl.psi.VCLInlineCMixin"}
 
