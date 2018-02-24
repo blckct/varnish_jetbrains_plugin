@@ -102,7 +102,7 @@
   INLINE_C ::= 'C{' C_CONTENT '}C' {implements="rocks.blackcat.vcl.psi.VCLInlineCMixin"}
 
   LONG_STRING ::= '{"' STRING_CONTENT '"}' //{pin=1}
-  STRINGS ::= STRINGS_INTERNAL [('+' STRINGS_INTERNAL) *] {implements="rocks.blackcat.vcl.psi.VCLStringMixin"}
+  STRINGS ::= STRINGS_INTERNAL [(['+'] STRINGS_INTERNAL) *] {implements="rocks.blackcat.vcl.psi.VCLStringMixin"}
   STRINGS_INTERNAL ::= string | LONG_STRING | F_CALL| OBJECT
   IF_STATEMENT ::= 'if' IF_INTERAL
   private IF_INTERAL ::= CONDITION COMPOUND [ELSE]//{pin=1 recoverWhile=rc_recover}
