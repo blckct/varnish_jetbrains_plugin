@@ -14,9 +14,12 @@ public class VCLFile extends PsiFileBase {
 
     public VCLFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, VCLLanguage.INSTANCE);
+    }
+
+    public Double getVersion(){
         VCLVersion versionNode = this.findChildByClass(VCLVersion.class);
         if(versionNode == null) {
-            return;
+            return 3.0;
         }
         try {
             String version = versionNode.getText().replace("vcl", "").replace(";","");
@@ -24,6 +27,8 @@ public class VCLFile extends PsiFileBase {
         } catch (NumberFormatException e) {
             this.version = 3.0;
         }
+
+        return this.version;
     }
 
     @NotNull

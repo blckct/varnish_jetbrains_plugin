@@ -46,6 +46,7 @@
 
     <languageInjector implementation="rocks.blackcat.vcl.psi.VCL_C_LanguageInjector" />
     <annotator language="VCL" implementationClass="rocks.blackcat.vcl.VCLAnnotator"/>
+    <lang.commenter language="VCL" implementationClass="rocks.blackcat.vcl.VCLCommenter" />
   </extensions>
 
   <actions>
