@@ -86,7 +86,7 @@
   COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
   //private rc_recover ::= !(RC)
 
-  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' ) *
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | INCLUDE) *
   ACTION ::= F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN | SYNTHETIC
   ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
