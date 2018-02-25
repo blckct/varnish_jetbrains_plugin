@@ -9,11 +9,17 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      v0.5 </br>
+      <ul>
+          <li> Added support for quick commenting </li>
+          <li> Added some annotations for 3->4 upgrade</li>
+          <li> More BNF fixes </li>
+        </ul>
       v0.4 </br>
         <ul>
-        <li> Add basic C language injection </li>
-        <li> Rewrite BNF </li>
-        <li> Fix bug for unclosed inline C and long string </li>
+          <li> Add basic C language injection </li>
+          <li> Rewrite BNF </li>
+          <li> Fix bug for unclosed inline C and long string </li>
         </ul>
       v0.3 </br>
         <ul>
