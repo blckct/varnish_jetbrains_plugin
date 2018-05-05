@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface VCLProbe extends PsiElement {
+public interface VCLProbeInternal extends PsiElement {
 
   @NotNull
-  VCLProbeInternal getProbeInternal();
-
-  @NotNull
-  PsiElement getIdentifier();
+  List<VCLStrings> getStringsList();
 
 }

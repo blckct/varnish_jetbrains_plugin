@@ -61,6 +61,7 @@
       //keyword_purge = 'purge' //It can't be a keyword as it's not restricted
       keyword_error = 'error'
       keyword_director = 'director'
+      keyword_probe = 'probe'
       keyword_synthetic = 'synthetic'
     ]
 
@@ -75,7 +76,7 @@
   IMPORT ::= 'import' identifier ';'
   INCLUDE ::= 'include' STRINGS ';'
 
-  PROBE ::= 'probe' '{' PROBE_INTERNAL '}'
+  PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}'
   ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( NETMASK | string [])
@@ -164,15 +165,15 @@
                         |  '.connect_timeout' '=' duration ';'
                         |  '.between_bytes_timeout'  '=' duration ';'
                         | BACKEND_PROBE
-  BACKEND_PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'
-  PROBE_INTERNAL ::= '.url' '=' STRINGS ';'
+  BACKEND_PROBE ::= '.probe' '=' '{' PROBE_INTERNAL * '}'*/
+  PROBE_INTERNAL ::= ('.url' '=' STRINGS ';'
                      | '.timeout' '=' duration ';'
                      | '.interval' '=' duration ';'
                      | '.window' '=' number ';'
                      | '.threshold' '=' number ';'
                      | '.request' '=' STRINGS * ';'
                      | '.expected_response' '=' number ';'
-                     | '.initial' '=' number ';'
-  DIRECTOR_ENTRY ::= (property|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')*/
+                     | '.initial' '=' number ';')+
+  /*DIRECTOR_ENTRY ::= (property|identifier) '=' (VALUE ';'| BACKEND_INTERNAL | '{' DIRECTOR_ENTRY'}')*/
   //private semi_recover ::= !(SEMI);
 

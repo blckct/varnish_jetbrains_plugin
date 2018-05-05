@@ -73,6 +73,7 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
 //  "purge"              { return KEYWORD_PURGE; } //It can't be a keyword as it's not restricted
   "error"              { return KEYWORD_ERROR; }
   "director"           { return KEYWORD_DIRECTOR; }
+  "probe"              { return KEYWORD_PROBE; }
   "synthetic"          { return KEYWORD_SYNTHETIC; }
 
    "C{"                { yybegin(INLINE_C); c_start = getTokenStart()+2; return L_CBRACE;}

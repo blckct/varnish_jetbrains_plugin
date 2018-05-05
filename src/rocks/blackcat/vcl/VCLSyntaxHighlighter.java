@@ -72,6 +72,7 @@ public class VCLSyntaxHighlighter extends SyntaxHighlighterBase {
 //            KEYWORD_PURGE, //It can't be a keyword as it's not restricted
             KEYWORD_ERROR,
             KEYWORD_DIRECTOR,
+            KEYWORD_PROBE,
             KEYWORD_SYNTHETIC
     );
 
