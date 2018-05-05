@@ -61,6 +61,7 @@
       //keyword_purge = 'purge' //It can't be a keyword as it's not restricted
       keyword_error = 'error'
       keyword_director = 'director'
+      keyword_probe = 'probe'
       keyword_synthetic = 'synthetic'
     ]
 
@@ -75,7 +76,7 @@
   IMPORT ::= 'import' identifier ';'
   INCLUDE ::= 'include' STRINGS ';'
 
-  PROBE ::= 'probe' identifier '{' PROBE_INTERNAL '}'
+  PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}'
   ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( NETMASK | string [])

@@ -70,6 +70,7 @@ public interface VCLTypes {
   IElementType KEYWORD_IMPORT = new VCLTokenType("import");
   IElementType KEYWORD_INCLUDE = new VCLTokenType("include");
   IElementType KEYWORD_NEW = new VCLTokenType("new");
+  IElementType KEYWORD_PROBE = new VCLTokenType("probe");
   IElementType KEYWORD_REMOVE = new VCLTokenType("remove");
   IElementType KEYWORD_RETURN = new VCLTokenType("return");
   IElementType KEYWORD_SET = new VCLTokenType("set");

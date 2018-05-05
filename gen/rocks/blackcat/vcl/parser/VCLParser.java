@@ -977,16 +977,16 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'probe' identifier '{' PROBE_INTERNAL '}'
+  // keyword_probe identifier '{' PROBE_INTERNAL '}'
   public static boolean PROBE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PROBE")) return false;
+    if (!nextTokenIs(b, KEYWORD_PROBE)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROBE, "<probe>");
-    r = consumeToken(b, "probe");
-    r = r && consumeTokens(b, 0, IDENTIFIER, LC);
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KEYWORD_PROBE, IDENTIFIER, LC);
     r = r && PROBE_INTERNAL(b, l + 1);
     r = r && consumeToken(b, RC);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, PROBE, r);
     return r;
   }
 
