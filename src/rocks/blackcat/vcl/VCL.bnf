@@ -123,7 +123,7 @@
   DIRECTOR ::= keyword_director identifier identifier '{' [ ('{' OBJECT_INTERNAL *'}' | OBJECT_INTERNAL) *]'}'
   BACKEND ::= 'backend' identifier '{' [OBJECT_INTERNAL *] '}'
 
-  OBJECT_INTERNAL ::= (property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')
+  OBJECT_INTERNAL ::= (VALUE ';'| ((property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')))
 
   RETURN ::= 'return' '('( F_SYNTH | identifier ) ')'
 

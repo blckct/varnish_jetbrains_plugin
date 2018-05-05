@@ -821,22 +821,43 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')
+  // VALUE ';'| ((property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}'))
   public static boolean OBJECT_INTERNAL(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OBJECT_INTERNAL")) return false;
-    if (!nextTokenIs(b, "<object internal>", IDENTIFIER, PROPERTY)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, OBJECT_INTERNAL, "<object internal>");
     r = OBJECT_INTERNAL_0(b, l + 1);
-    r = r && consumeToken(b, EQ);
-    r = r && OBJECT_INTERNAL_2(b, l + 1);
+    if (!r) r = OBJECT_INTERNAL_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // property|identifier
+  // VALUE ';'
   private static boolean OBJECT_INTERNAL_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OBJECT_INTERNAL_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = VALUE(b, l + 1);
+    r = r && consumeToken(b, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')
+  private static boolean OBJECT_INTERNAL_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = OBJECT_INTERNAL_1_0(b, l + 1);
+    r = r && consumeToken(b, EQ);
+    r = r && OBJECT_INTERNAL_1_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // property|identifier
+  private static boolean OBJECT_INTERNAL_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, PROPERTY);
@@ -846,19 +867,19 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   // VALUE ';'| '{' OBJECT_INTERNAL * '}'
-  private static boolean OBJECT_INTERNAL_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_2")) return false;
+  private static boolean OBJECT_INTERNAL_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = OBJECT_INTERNAL_2_0(b, l + 1);
-    if (!r) r = OBJECT_INTERNAL_2_1(b, l + 1);
+    r = OBJECT_INTERNAL_1_2_0(b, l + 1);
+    if (!r) r = OBJECT_INTERNAL_1_2_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // VALUE ';'
-  private static boolean OBJECT_INTERNAL_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_2_0")) return false;
+  private static boolean OBJECT_INTERNAL_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = VALUE(b, l + 1);
@@ -868,24 +889,24 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   // '{' OBJECT_INTERNAL * '}'
-  private static boolean OBJECT_INTERNAL_2_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_2_1")) return false;
+  private static boolean OBJECT_INTERNAL_1_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1_2_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LC);
-    r = r && OBJECT_INTERNAL_2_1_1(b, l + 1);
+    r = r && OBJECT_INTERNAL_1_2_1_1(b, l + 1);
     r = r && consumeToken(b, RC);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // OBJECT_INTERNAL *
-  private static boolean OBJECT_INTERNAL_2_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_2_1_1")) return false;
+  private static boolean OBJECT_INTERNAL_1_2_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OBJECT_INTERNAL_1_2_1_1")) return false;
     int c = current_position_(b);
     while (true) {
       if (!OBJECT_INTERNAL(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "OBJECT_INTERNAL_2_1_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "OBJECT_INTERNAL_1_2_1_1", c)) break;
       c = current_position_(b);
     }
     return true;
