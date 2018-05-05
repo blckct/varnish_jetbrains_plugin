@@ -119,6 +119,10 @@ public class VCLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitProbeInternal(@NotNull VCLProbeInternal o) {
+    visitPsiElement(o);
+  }
+
   public void visitPurge(@NotNull VCLPurge o) {
     visitPsiElement(o);
   }

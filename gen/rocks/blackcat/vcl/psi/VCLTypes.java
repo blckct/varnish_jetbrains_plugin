@@ -36,6 +36,7 @@ public interface VCLTypes {
   IElementType OPERATION = new VCLElementType("OPERATION");
   IElementType OPERATION_INTERNAL = new VCLElementType("OPERATION_INTERNAL");
   IElementType PROBE = new VCLElementType("PROBE");
+  IElementType PROBE_INTERNAL = new VCLElementType("PROBE_INTERNAL");
   IElementType PURGE = new VCLElementType("PURGE");
   IElementType RETURN = new VCLElementType("RETURN");
   IElementType SET = new VCLElementType("SET");
@@ -82,7 +83,6 @@ public interface VCLTypes {
   IElementType L_LSTRING = new VCLTokenType("{\"");
   IElementType NUMBER = new VCLTokenType("number");
   IElementType OPERATOR = new VCLTokenType("operator");
-  IElementType PROBE_INTERNAL = new VCLTokenType("PROBE_INTERNAL");
   IElementType PROPERTY = new VCLTokenType("property");
   IElementType RC = new VCLTokenType("}");
   IElementType RP = new VCLTokenType(")");
@@ -178,6 +178,9 @@ public interface VCLTypes {
       }
       else if (type == PROBE) {
         return new VCLProbeImpl(node);
+      }
+      else if (type == PROBE_INTERNAL) {
+        return new VCLProbeInternalImpl(node);
       }
       else if (type == PURGE) {
         return new VCLPurgeImpl(node);

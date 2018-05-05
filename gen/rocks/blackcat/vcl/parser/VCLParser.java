@@ -107,6 +107,9 @@ public class VCLParser implements PsiParser, LightPsiParser {
     else if (t == PROBE) {
       r = PROBE(b, 0);
     }
+    else if (t == PROBE_INTERNAL) {
+      r = PROBE_INTERNAL(b, 0);
+    }
     else if (t == PURGE) {
       r = PURGE(b, 0);
     }
@@ -974,14 +977,176 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'probe' '{' PROBE_INTERNAL '}'
+  // 'probe' identifier? '{' PROBE_INTERNAL '}'
   public static boolean PROBE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PROBE")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PROBE, "<probe>");
     r = consumeToken(b, "probe");
-    r = r && consumeTokens(b, 0, LC, PROBE_INTERNAL, RC);
+    r = r && PROBE_1(b, l + 1);
+    r = r && consumeToken(b, LC);
+    r = r && PROBE_INTERNAL(b, l + 1);
+    r = r && consumeToken(b, RC);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // identifier?
+  private static boolean PROBE_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_1")) return false;
+    consumeToken(b, IDENTIFIER);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // ('.url' '=' STRINGS ';'
+  //                      | '.timeout' '=' duration ';'
+  //                      | '.interval' '=' duration ';'
+  //                      | '.window' '=' number ';'
+  //                      | '.threshold' '=' number ';'
+  //                      | '.request' '=' STRINGS * ';'
+  //                      | '.expected_response' '=' number ';'
+  //                      | '.initial' '=' number ';')+
+  public static boolean PROBE_INTERNAL(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PROBE_INTERNAL, "<probe internal>");
+    r = PROBE_INTERNAL_0(b, l + 1);
+    int c = current_position_(b);
+    while (r) {
+      if (!PROBE_INTERNAL_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "PROBE_INTERNAL", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // '.url' '=' STRINGS ';'
+  //                      | '.timeout' '=' duration ';'
+  //                      | '.interval' '=' duration ';'
+  //                      | '.window' '=' number ';'
+  //                      | '.threshold' '=' number ';'
+  //                      | '.request' '=' STRINGS * ';'
+  //                      | '.expected_response' '=' number ';'
+  //                      | '.initial' '=' number ';'
+  private static boolean PROBE_INTERNAL_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = PROBE_INTERNAL_0_0(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_1(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_2(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_3(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_4(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_5(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_6(b, l + 1);
+    if (!r) r = PROBE_INTERNAL_0_7(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.url' '=' STRINGS ';'
+  private static boolean PROBE_INTERNAL_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".url");
+    r = r && consumeToken(b, EQ);
+    r = r && STRINGS(b, l + 1);
+    r = r && consumeToken(b, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.timeout' '=' duration ';'
+  private static boolean PROBE_INTERNAL_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".timeout");
+    r = r && consumeTokens(b, 0, EQ, DURATION, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.interval' '=' duration ';'
+  private static boolean PROBE_INTERNAL_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".interval");
+    r = r && consumeTokens(b, 0, EQ, DURATION, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.window' '=' number ';'
+  private static boolean PROBE_INTERNAL_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".window");
+    r = r && consumeTokens(b, 0, EQ, NUMBER, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.threshold' '=' number ';'
+  private static boolean PROBE_INTERNAL_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".threshold");
+    r = r && consumeTokens(b, 0, EQ, NUMBER, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.request' '=' STRINGS * ';'
+  private static boolean PROBE_INTERNAL_0_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".request");
+    r = r && consumeToken(b, EQ);
+    r = r && PROBE_INTERNAL_0_5_2(b, l + 1);
+    r = r && consumeToken(b, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STRINGS *
+  private static boolean PROBE_INTERNAL_0_5_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_5_2")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!STRINGS(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "PROBE_INTERNAL_0_5_2", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // '.expected_response' '=' number ';'
+  private static boolean PROBE_INTERNAL_0_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_6")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".expected_response");
+    r = r && consumeTokens(b, 0, EQ, NUMBER, SEMI);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '.initial' '=' number ';'
+  private static boolean PROBE_INTERNAL_0_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PROBE_INTERNAL_0_7")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ".initial");
+    r = r && consumeTokens(b, 0, EQ, NUMBER, SEMI);
+    exit_section_(b, m, null, r);
     return r;
   }
 

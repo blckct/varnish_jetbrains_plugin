@@ -11,14 +11,14 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import rocks.blackcat.vcl.psi.*;
 
-public class VCLProbeImpl extends ASTWrapperPsiElement implements VCLProbe {
+public class VCLProbeInternalImpl extends ASTWrapperPsiElement implements VCLProbeInternal {
 
-  public VCLProbeImpl(ASTNode node) {
+  public VCLProbeInternalImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VCLVisitor visitor) {
-    visitor.visitProbe(this);
+    visitor.visitProbeInternal(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,14 +28,8 @@ public class VCLProbeImpl extends ASTWrapperPsiElement implements VCLProbe {
 
   @Override
   @NotNull
-  public VCLProbeInternal getProbeInternal() {
-    return findNotNullChildByClass(VCLProbeInternal.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+  public List<VCLStrings> getStringsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VCLStrings.class);
   }
 
 }
