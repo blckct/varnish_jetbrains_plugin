@@ -33,9 +33,9 @@ public class VCLProbeImpl extends ASTWrapperPsiElement implements VCLProbe {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

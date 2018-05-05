@@ -75,7 +75,7 @@
   IMPORT ::= 'import' identifier ';'
   INCLUDE ::= 'include' STRINGS ';'
 
-  PROBE ::= 'probe' identifier? '{' PROBE_INTERNAL '}'
+  PROBE ::= 'probe' identifier '{' PROBE_INTERNAL '}'
   ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( NETMASK | string [])

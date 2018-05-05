@@ -10,7 +10,7 @@ public interface VCLProbe extends PsiElement {
   @NotNull
   VCLProbeInternal getProbeInternal();
 
-  @Nullable
+  @NotNull
   PsiElement getIdentifier();
 
 }
