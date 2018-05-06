@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>rocks.blackcat.vcl</id>
   <name>VCL/Varnish language plugin</name>
-  <version>0.4</version>
+  <version>0.6</version>
   <vendor email="jakubkania@blackcat.rocks" url="http://blackcat.rocks">Jakub Kania</vendor>
 
   <description><![CDATA[
@@ -9,6 +9,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      v0.6 </br>
+        <ul>
+          <li> Allow netmasks in directors </li>
+          <li> Fixed probe syntax (by Michał Markiewicz) </li>
+        </ul>
       v0.5 </br>
       <ul>
           <li> Added support for quick commenting </li>
