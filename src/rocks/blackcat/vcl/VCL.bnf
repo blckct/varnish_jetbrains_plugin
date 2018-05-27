@@ -32,8 +32,8 @@
       string="regexp:('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")"
       //string="regexp:(\"([^\n\"]|.*)\"|'(.*|[^\n'])')"
       //private identifier='regexp:\p{Alpha}[\w-]*'
-      property="regexp:(\.[a-zA-Z][a-zA-Z0-9_-.]*)"
-      identifier="regexp:([a-zA-Z][a-zA-Z0-9_-.]*)"
+      property="regexp:(\.[a-zA-Z][a-zA-Z0-9_-]*)"
+      identifier="regexp:([a-zA-Z][a-zA-Z0-9_-]*)"
       block_comment='regexp:/\*..*\*/'
       operator='regexp: \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|/=|>|<|/|\+|\*|-|\|\|'
 
@@ -116,7 +116,7 @@
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
   LITERAL ::= NETMASK | STRINGS | number | identifier | OBJECT | duration
-  OBJECT ::= identifier ['DOT' identifier]
+  OBJECT ::= identifier [property *]
 
   F_SYNTH ::= 'synth(' number ',' STRINGS ')'
 

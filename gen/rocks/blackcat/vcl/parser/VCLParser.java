@@ -790,7 +790,7 @@ public class VCLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier ['DOT' identifier]
+  // identifier [property *]
   public static boolean OBJECT(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OBJECT")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
@@ -802,22 +802,23 @@ public class VCLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ['DOT' identifier]
+  // [property *]
   private static boolean OBJECT_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OBJECT_1")) return false;
     OBJECT_1_0(b, l + 1);
     return true;
   }
 
-  // 'DOT' identifier
+  // property *
   private static boolean OBJECT_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OBJECT_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "DOT");
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, null, r);
-    return r;
+    int c = current_position_(b);
+    while (true) {
+      if (!consumeToken(b, PROPERTY)) break;
+      if (!empty_element_parsed_guard_(b, "OBJECT_1_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
   }
 
   /* ********************************************************** */
