@@ -87,18 +87,18 @@
   COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
   //private rc_recover ::= !(RC)
 
-  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | INCLUDE) *
-  ACTION ::= SYNTHETIC | F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
-  ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION  | INCLUDE) *
+  ACTION ::= SYNTHETIC | F_CALL ';'| SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
+  ERROR ::= 'error' number (OPERATION)  ';'//{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
   F_CALL ::= (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
   //SYNTH ::= 'synth('number','STRINGS')'
-  PURGE ::= 'purge'
-  NEW ::= keyword_new OBJECT '=' OPERATION
-  CALL ::= 'call' OBJECT
-  SET ::= 'set' OBJECT '=' (OPERATION)
-  UNSET ::= ('unset' | 'remove') OBJECT
-  SYNTHETIC ::= 'synthetic' (STRINGS | '(' STRINGS')') //Can't find a simple way to deal with it right now
+  PURGE ::= 'purge' ';'
+  NEW ::= keyword_new OBJECT '=' OPERATION ';'
+  CALL ::= 'call' OBJECT ';'
+  SET ::= 'set' OBJECT '=' (OPERATION) ';' {pin=1}
+  UNSET ::= ('unset' | 'remove') OBJECT ';' {pin=1}
+  SYNTHETIC ::= 'synthetic' (STRINGS | '(' STRINGS')') ';' //Can't find a simple way to deal with it right now
 
   INLINE_C ::= 'C{' C_CONTENT '}C' {implements="rocks.blackcat.vcl.psi.VCLInlineCMixin"}
 
@@ -116,7 +116,7 @@
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
   LITERAL ::= NETMASK | STRINGS | number | identifier | OBJECT | duration
-  OBJECT ::= identifier [property *]
+  OBJECT ::= identifier [property *] //{implements="rocks.blackcat.vcl.psi.VCLObjectMixin"}
 
   F_SYNTH ::= 'synth(' number ',' STRINGS ')'
 
@@ -125,7 +125,7 @@
 
   OBJECT_INTERNAL ::= (VALUE ';'| ((property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')))
 
-  RETURN ::= 'return' '('( F_SYNTH | identifier ) ')'
+  RETURN ::= 'return' '('( F_SYNTH | identifier ) ')' ';'
 
   //VARIABLES
   /*VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
