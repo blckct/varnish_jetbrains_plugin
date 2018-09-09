@@ -1,3 +1,4 @@
+![Download Count](https://img.shields.io/jetbrains/plugin/d/10135-vcl-varnish-language-plugin.svg)
 [![Build Status](https://travis-ci.org/blckct/varnish_jetbrains_plugin.svg?branch=master)](https://travis-ci.org/blckct/varnish_jetbrains_plugin)
 
 Jetbrains IDE plugin for Varnish Configuration Langauge
