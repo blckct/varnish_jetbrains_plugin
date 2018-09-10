@@ -11,6 +11,7 @@ plugins {
   id "org.jetbrains.intellij" version "0.3.9"
   id "jacoco"
   id 'com.github.kt3k.coveralls' version '2.8.2'
+  id "org.jetbrains.grammarkit" version "2018.1.7"
 }
 
 task wrapper(type: Wrapper) {
@@ -25,6 +26,45 @@ jacocoTestReport {
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.grammarkit'
+
+import org.jetbrains.grammarkit.tasks.*
+
+task generateVCLLexer(type: GenerateLexer) {
+    // source flex file
+    source = "src/rocks/blackcat/vcl/VCL.flex"
+
+    // target directory for lexer
+    targetDir = "gen/rocks/blackcat/vcl"
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass = "VCLLexer"
+
+    // if set, plugin will remove a lexer output file before generating new one. Default: false
+    purgeOldFiles = true
+}
+
+task generateVCLParser(type: GenerateParser) {
+    //This doesn't seem to work as I want it to so force
+    outputs.upToDateWhen { false }
+
+    // source bnf file
+    source = "src/rocks/blackcat/vcl/VCL.bnf"
+
+    // optional, task-specific root for the generated files. Default: none
+    targetRoot = "gen"
+
+    // path to a parser file, relative to the targetRoot
+    pathToParser = 'gen/rocks/blackcat/parser/VCLParser.java'
+
+    // path to a directory with generated psi files, relative to the targetRoot
+    pathToPsiRoot = 'gen/rocks/blackcat/vcl/psi'
+
+    // if set, plugin will remove a parser output file and psi output directory before generating new ones. Default: false
+    purgeOldFiles = true
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -59,3 +99,12 @@ dependencies {
 }
 */
 
+test {
+  testLogging.showStandardStreams = true
+}
+
+
+compileJava {
+    dependsOn generateVCLLexer
+    dependsOn generateVCLParser
+}
