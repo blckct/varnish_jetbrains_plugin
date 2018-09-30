@@ -3,12 +3,24 @@ package rocks.blackcat.vcl.psi;
 import com.intellij.testFramework.ParsingTestCase;
 import rocks.blackcat.vcl.VCLParserDefinition;
 
-public class testAcl extends ParsingTestCase {
-    public testAcl() {
+public class testPsi extends ParsingTestCase {
+    public testPsi() {
         super("", "vcl", new VCLParserDefinition());
     }
 
     public void testAcl() {
+        doTest(true);
+    }
+
+    public void testBackend() {
+        doTest(true);
+    }
+
+    public void testC() {
+        doTest(true);
+    }
+
+    public void testDirectors() {
         doTest(true);
     }
 
