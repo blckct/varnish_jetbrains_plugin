@@ -24,6 +24,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+    public void testReturn() {
+        doTest(true);
+    }
+
     @Override
     protected String getTestDataPath() {
         return "testData/psi";
