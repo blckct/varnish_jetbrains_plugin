@@ -1,14 +1,21 @@
 <idea-plugin>
   <id>rocks.blackcat.vcl</id>
   <name>VCL/Varnish language plugin</name>
-  <version>0.6</version>
+  <version>0.7</version>
   <vendor email="jakubkania@blackcat.rocks" url="http://blackcat.rocks">Jakub Kania</vendor>
 
   <description><![CDATA[
       Support for the Varnish Configuration Language
     ]]></description>
 
+
   <change-notes><![CDATA[
+      v0.7 </br>
+        <ul>
+            <li>Fix pass() and synth() in return clause</li>
+            <li>BNF pins so the file is still parsed correctly while editing</li>
+            <li>Add unit tests and new build process so the plugin is easier to maintain in the future</li>
+        </ul>
       v0.6 </br>
         <ul>
           <li> Allow netmasks in directors </li>
