@@ -90,7 +90,6 @@
   STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION  | INCLUDE) *
   ACTION ::= SYNTHETIC | F_CALL ';'| SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
   ERROR ::= 'error' number [STRINGS]  ';' {pin=1}//{pin=1 recoverWhile=semi_recover}
-  BUITLIN ::= RETURN | ERROR
   F_CALL ::= (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
   //SYNTH ::= 'synth('number','STRINGS')'
   PURGE ::= 'purge' ';' {pin=1}
