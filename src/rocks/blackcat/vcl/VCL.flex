@@ -19,20 +19,17 @@ import static rocks.blackcat.vcl.psi.VCLTypes.*;
 %eof}
 
 
-EOL=\R
 WHITE_SPACE=\s+
 
-SPACE=[ \t\n\x0B\f\r]+
-WHITESPACE=[ \t\n\x0B\f\r]+
 LINE_COMMENT=("//"|#).*
 NUMBER=[0-9]+(\.[0-9]*)?
 DURATION=[0-9]+(\.[0-9]*)?(ms|s|m|h|d|w|y)
-IP=\"\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b\"
+//Strings can either be double qouted or single quoted, they can't have new line in them, long strings are handled somewhere else
 STRING=('([^'\\\n]|\\.)*'|\"([^\"\\\n]|\\.)*\")
 PROPERTY=(\.[a-zA-Z]([a-zA-Z0-9_-])*)
 IDENTIFIER=([a-zA-Z]([a-zA-Z0-9_-])*)
 BLOCK_COMMENT= "/*"( [^*] | (\*+[^*/]) )*\*+\/
-OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
+OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|\+|\*|-|\|\|
 
 %state INLINE_C
 %state LONG_STRING
@@ -81,12 +78,9 @@ OPERATOR= \!=|\!\~|\~=|\!|\~|%|&&|&|==|\~|=|<=|>=|<<|>>|\*=|-=|\+=|"/"=|>|<|"/"|
    "{\""               { yybegin(LONG_STRING); s_start = getTokenStart()+2; return L_LSTRING; }
    "\"}"               { return R_LSTRING; }
 
-  {SPACE}              { return SPACE; }
-  {WHITESPACE}         { return WHITESPACE; }
   {LINE_COMMENT}       { return LINE_COMMENT; }
   {NUMBER}             { return NUMBER; }
   {DURATION}           { return DURATION; }
-  {IP}                 { return IP; }
   {STRING}             { return STRING; }
   {PROPERTY}           { return PROPERTY; }
   {IDENTIFIER}         { return IDENTIFIER; }
