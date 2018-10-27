@@ -72,33 +72,33 @@
 //  literal_expr ::= number | string | float
   root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
 
-  VERSION ::= 'vcl' number ';'
-  IMPORT ::= 'import' identifier ';'
-  INCLUDE ::= 'include' STRINGS ';'
+  VERSION ::= 'vcl' number ';' {pin=1}
+  IMPORT ::= 'import' identifier ';' {pin=1}
+  INCLUDE ::= 'include' STRINGS ';' {pin=1}
 
-  PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}'
-  ACL ::= 'acl' identifier '{'ACL_ENTRY'}'
+  PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}' {pin=1}
+  ACL ::= 'acl' identifier '{'ACL_ENTRY'}' {pin=1}
   ACL_ENTRY ::= (ACL_PART ';' | BLANK) *
   ACL_PART  ::= ['!'] ( NETMASK | string [])
   NETMASK ::= string '/' number
-  SUB ::= 'sub' identifier COMPOUND
+  SUB ::= 'sub' identifier COMPOUND {pin=1}
   //private not_sub ::= ! RC
 
   COMPOUND ::= '{' STATEMENT '}' //{pin=1  recoverWhile=rc_recover}
   //private rc_recover ::= !(RC)
 
-  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION ';' | INCLUDE) *
-  ACTION ::= SYNTHETIC | F_CALL | SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
-  ERROR ::= 'error' number (OPERATION) //{pin=1 recoverWhile=semi_recover}
+  STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION  | INCLUDE) *
+  ACTION ::= SYNTHETIC | F_CALL ';'| SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
+  ERROR ::= 'error' number (OPERATION)  ';' {pin=1}//{pin=1 recoverWhile=semi_recover}
   BUITLIN ::= RETURN | ERROR
   F_CALL ::= (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
   //SYNTH ::= 'synth('number','STRINGS')'
-  PURGE ::= 'purge'
-  NEW ::= keyword_new OBJECT '=' OPERATION
-  CALL ::= 'call' OBJECT
-  SET ::= 'set' OBJECT '=' (OPERATION)
-  UNSET ::= ('unset' | 'remove') OBJECT
-  SYNTHETIC ::= 'synthetic' (STRINGS | '(' STRINGS')') //Can't find a simple way to deal with it right now
+  PURGE ::= 'purge' ';' {pin=1}
+  NEW ::= keyword_new OBJECT '=' OPERATION ';' {pin=1}
+  CALL ::= 'call' OBJECT ';' {pin=1}
+  SET ::= 'set' OBJECT '=' (OPERATION) ';' {pin=1}
+  UNSET ::= ('unset' | 'remove') OBJECT ';' {pin=1}
+  SYNTHETIC ::= 'synthetic' (STRINGS | '(' STRINGS')') ';' {pin=1}//Can't find a simple way to deal with it right now
 
   INLINE_C ::= 'C{' C_CONTENT '}C' {implements="rocks.blackcat.vcl.psi.VCLInlineCMixin"}
 
@@ -116,18 +116,18 @@
   //OPERATOR ::='!'|'%'|'&'|'+'|'*'|'-'|'\/'|'<'|'='|'>'|'~'|'=='|'<='
     //            |'>='|'<<'|'>>'|'*='|'-='|'+='|'\/='
   LITERAL ::= NETMASK | STRINGS | number | identifier | OBJECT | duration
-  OBJECT ::= identifier [property *]
+  OBJECT ::= identifier [property *] //{implements="rocks.blackcat.vcl.psi.VCLObjectMixin"}
 
   F_SYNTH ::= 'synth(' number [',' STRINGS] ')'
   F_VCL ::= 'vcl(' identifier ')'
   F_PASS ::= 'pass(' duration ')'
 
-  DIRECTOR ::= keyword_director identifier identifier '{' [ ('{' OBJECT_INTERNAL *'}' | OBJECT_INTERNAL) *]'}'
-  BACKEND ::= 'backend' identifier '{' [OBJECT_INTERNAL *] '}'
+  DIRECTOR ::= keyword_director identifier identifier '{' [ ('{' OBJECT_INTERNAL *'}' | OBJECT_INTERNAL) *]'}' {pin=1}
+  BACKEND ::= 'backend' identifier '{' [OBJECT_INTERNAL *] '}' {pin=1}
 
   OBJECT_INTERNAL ::= (VALUE ';'| ((property|identifier) '=' (VALUE ';'| '{' OBJECT_INTERNAL * '}')))
 
-  RETURN ::= 'return' '('( F_SYNTH | F_VCL | F_PASS | identifier ) ')'
+  RETURN ::= 'return' '('( F_SYNTH | F_VCL | F_PASS | identifier ) ')' ';' {pin=1}
 
   //VARIABLES
   /*VARIABLE ::= BEREQ | BERESP | CLIENT | LOCAL | NOW | OBJ | REMOTE | REQ
