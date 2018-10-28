@@ -73,7 +73,7 @@
   root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
 
   VERSION ::= 'vcl' number ';' {pin=1}
-  IMPORT ::= 'import' identifier ';' {pin=1}
+  IMPORT ::= 'import' identifier [ 'from' STRINGS]';' {pin=1}
   INCLUDE ::= 'include' STRINGS ';' {pin=1}
 
   PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}' {pin=1}
