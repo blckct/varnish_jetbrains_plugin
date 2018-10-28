@@ -20,6 +20,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+//    public void testCall() {
+//        doTest(true);
+//    }
+
     public void testConditionals() {
         doTest(true);
     }
@@ -32,6 +36,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+//    public void testFunctions() {
+//        doTest(true);
+//    }
+
     public void testInclude() {
         doTest(true);
     }
@@ -40,9 +48,37 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+//    public void testNew() {
+//        doTest(true);
+//    }
+
+//    public void testProbe() {
+//        doTest(true);
+//    }
+
+//    public void testPurge() {
+//        doTest(true);
+//    }
+
     public void testReturn() {
         doTest(true);
     }
+
+//    public void testSet() {
+//        doTest(true);
+//    }
+
+    public void testStrings() {
+        doTest(true);
+    }
+
+//    public void testSynthetic() {
+//        doTest(true);
+//    }
+
+//    public void testUnset() {
+//        doTest(true);
+//    }
 
     @Override
     protected String getTestDataPath() {
