@@ -20,6 +20,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+    public void testConditionals() {
+        doTest(true);
+    }
+
     public void testDirectors() {
         doTest(true);
     }

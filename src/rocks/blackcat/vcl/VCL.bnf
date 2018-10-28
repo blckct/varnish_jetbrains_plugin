@@ -105,9 +105,9 @@
   LONG_STRING ::= '{"' STRING_CONTENT '"}' //{pin=1}
   STRINGS ::= STRINGS_INTERNAL [(['+'] STRINGS_INTERNAL) *] {implements="rocks.blackcat.vcl.psi.VCLStringMixin"}
   STRINGS_INTERNAL ::= string | LONG_STRING | F_CALL| OBJECT
-  IF_STATEMENT ::= 'if' IF_INTERAL
-  private IF_INTERAL ::= CONDITION COMPOUND [ELSE]//{pin=1 recoverWhile=rc_recover}
-  ELSE ::= ('else' (COMPOUND | IF_STATEMENT)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
+  IF_STATEMENT ::= 'if' IF_INTERAL [ELSE *]
+  private IF_INTERAL ::= CONDITION COMPOUND //{pin=1 recoverWhile=rc_recover}
+  ELSE ::= ('else'  (IF_STATEMENT | COMPOUND)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
   CONDITION ::= '(' EXPRESSION ')'
   EXPRESSION ::= ('!' '(' EXPRESSION ')' |CONDITION | F_CALL | OPERATION | OBJECT | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
   OPERATION ::= OPERATION_INTERNAL [([operator *] OPERATION_INTERNAL) *]
