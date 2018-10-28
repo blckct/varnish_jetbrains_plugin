@@ -32,6 +32,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+    public void testInclude() {
+        doTest(true);
+    }
+
     public void testImport() {
         doTest(true);
     }
