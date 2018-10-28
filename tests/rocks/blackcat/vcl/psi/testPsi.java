@@ -56,9 +56,9 @@ public class testPsi extends ParsingTestCase {
 //        doTest(true);
 //    }
 
-//    public void testPurge() {
-//        doTest(true);
-//    }
+    public void testPurge() {
+        doTest(true);
+    }
 
     public void testReturn() {
         doTest(true);
