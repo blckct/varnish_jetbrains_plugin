@@ -20,6 +20,7 @@ sub vcl_recv {
         return (purge);
     }
     if ("vcl" == "vcl") {
+            //return a label
             return (vcl(test));
         }
 }
@@ -189,6 +190,9 @@ sub vcl_init{
         }
     if ("fail" == "fail") {
              return (fail);
+        }
+    if ("fail message" == "fail message") {
+                 return (fail("message"));
         }
 }
 
