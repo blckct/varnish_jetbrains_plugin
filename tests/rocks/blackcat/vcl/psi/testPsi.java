@@ -28,6 +28,10 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
+    public void testError() {
+        doTest(true);
+    }
+
     public void testImport() {
         doTest(true);
     }
