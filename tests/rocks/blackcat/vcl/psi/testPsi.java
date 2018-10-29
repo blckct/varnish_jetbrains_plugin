@@ -64,9 +64,9 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
-//    public void testSet() {
-//        doTest(true);
-//    }
+    public void testSet() {
+        doTest(true);
+    }
 
     public void testStrings() {
         doTest(true);
@@ -76,9 +76,9 @@ public class testPsi extends ParsingTestCase {
 //        doTest(true);
 //    }
 
-//    public void testUnset() {
-//        doTest(true);
-//    }
+    public void testUnset() {
+        doTest(true);
+    }
 
     @Override
     protected String getTestDataPath() {
