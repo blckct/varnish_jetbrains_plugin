@@ -73,7 +73,7 @@
   root ::= [VERSION] (ACL | SUB | IMPORT | BACKEND | PROBE | INCLUDE | INLINE_C | DIRECTOR)*
 
   VERSION ::= 'vcl' number ';' {pin=1}
-  IMPORT ::= 'import' identifier ';' {pin=1}
+  IMPORT ::= 'import' identifier [ 'from' STRINGS]';' {pin=1}
   INCLUDE ::= 'include' STRINGS ';' {pin=1}
 
   PROBE ::= keyword_probe identifier '{' PROBE_INTERNAL '}' {pin=1}
@@ -89,8 +89,7 @@
 
   STATEMENT ::= (COMPOUND | IF_STATEMENT | INLINE_C | ACTION  | INCLUDE) *
   ACTION ::= SYNTHETIC | F_CALL ';'| SET | UNSET | CALL | PURGE | NEW  | ERROR | RETURN
-  ERROR ::= 'error' number (OPERATION)  ';' {pin=1}//{pin=1 recoverWhile=semi_recover}
-  BUITLIN ::= RETURN | ERROR
+  ERROR ::= 'error' number [STRINGS]  ';' {pin=1}//{pin=1 recoverWhile=semi_recover}
   F_CALL ::= (OBJECT ) '(' [OPERATION [ (',' OPERATION ) *]] ')'
   //SYNTH ::= 'synth('number','STRINGS')'
   PURGE ::= 'purge' ';' {pin=1}
@@ -105,9 +104,9 @@
   LONG_STRING ::= '{"' STRING_CONTENT '"}' //{pin=1}
   STRINGS ::= STRINGS_INTERNAL [(['+'] STRINGS_INTERNAL) *] {implements="rocks.blackcat.vcl.psi.VCLStringMixin"}
   STRINGS_INTERNAL ::= string | LONG_STRING | F_CALL| OBJECT
-  IF_STATEMENT ::= 'if' IF_INTERAL
-  private IF_INTERAL ::= CONDITION COMPOUND [ELSE]//{pin=1 recoverWhile=rc_recover}
-  ELSE ::= ('else' (COMPOUND | IF_STATEMENT)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
+  IF_STATEMENT ::= 'if' IF_INTERAL [ELSE *]
+  private IF_INTERAL ::= CONDITION COMPOUND //{pin=1 recoverWhile=rc_recover}
+  ELSE ::= ('else'  (IF_STATEMENT | COMPOUND)) | ('elif' | 'elseif'| 'elsif') IF_INTERAL
   CONDITION ::= '(' EXPRESSION ')'
   EXPRESSION ::= ('!' '(' EXPRESSION ')' |CONDITION | F_CALL | OPERATION | OBJECT | 'true' | 'false' ) [('&&' | '||' EXPRESSION) ]
   OPERATION ::= OPERATION_INTERNAL [([operator *] OPERATION_INTERNAL) *]
