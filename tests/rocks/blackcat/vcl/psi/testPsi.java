@@ -48,9 +48,9 @@ public class testPsi extends ParsingTestCase {
         doTest(true);
     }
 
-//    public void testNew() {
-//        doTest(true);
-//    }
+    public void testNew() {
+        doTest(true);
+    }
 
 //    public void testProbe() {
 //        doTest(true);
