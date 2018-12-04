@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>rocks.blackcat.vcl</id>
-  <name>VCL/Varnish language plugin</name>
-  <version>0.7</version>
+  <name>VCL/Varnish language</name>
+  <version>0.7.2</version>
   <vendor email="jakubkania@blackcat.rocks" url="http://blackcat.rocks">Jakub Kania</vendor>
 
   <description><![CDATA[
@@ -10,11 +10,13 @@
 
 
   <change-notes><![CDATA[
-      v0.7 </br>
+      v0.7.2 </br>
         <ul>
             <li>Fix pass() and synth() in return clause</li>
             <li>BNF pins so the file is still parsed correctly while editing</li>
             <li>Add unit tests and new build process so the plugin is easier to maintain in the future</li>
+            <li>Fix Import from</li>
+            <li>Add return fail()</li>
         </ul>
       v0.6 </br>
         <ul>
