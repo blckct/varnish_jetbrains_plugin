@@ -16,6 +16,7 @@ plugins {
 
 intellij {
   intellij.updateSinceUntilBuild false
+  plugins 'PsiViewer:183.2153'
 }
 
 task wrapper(type: Wrapper) {
